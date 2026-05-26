@@ -1,0 +1,6 @@
+{
+  "name": "Curry Express",
+  "description": "Bold Indian & Express Chinese Flavors. A curated, artisanal atmosphere brought to your doorstep.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

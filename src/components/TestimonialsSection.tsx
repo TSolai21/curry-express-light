@@ -1,0 +1,188 @@
+import React, { useState } from 'react';
+import { Star, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Testimonial } from '../types';
+
+interface TestimonialsSectionProps {
+  testimonials: Testimonial[];
+}
+
+export default function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
+  const [selectedReview, setSelectedReview] = useState<Testimonial | null>(null);
+
+  const renderStars = (ratingNum: number, size = 16, fillClass = "text-amber-500 fill-amber-500") => {
+    const starsArray = [];
+    const fullStars = Math.floor(ratingNum);
+    const hasHalf = ratingNum % 1 !== 0;
+
+    for (let i = 1; i <= 5; i++) {
+      if (i <= fullStars) {
+        starsArray.push(
+          <Star
+            key={i}
+            className={fillClass}
+            style={{ width: `${size}px`, height: `${size}px` }}
+          />
+        );
+      } else if (i === fullStars + 1 && hasHalf) {
+        starsArray.push(
+          <div key={i} className="relative inline-block" style={{ width: `${size}px`, height: `${size}px` }}>
+            <Star className="text-outline-variant" style={{ width: `${size}px`, height: `${size}px` }} />
+            <div className="absolute top-0 left-0 overflow-hidden" style={{ width: '50%' }}>
+              <Star className={fillClass} style={{ width: `${size}px`, height: `${size}px` }} />
+            </div>
+          </div>
+        );
+      } else {
+        starsArray.push(
+          <Star
+            key={i}
+            className="text-outline-variant"
+            style={{ width: `${size}px`, height: `${size}px` }}
+          />
+        );
+      }
+    }
+    return <div className="flex gap-1">{starsArray}</div>;
+  };
+
+  // Helper to get consistent background colors for user initial avatars (Google Style)
+  const getAvatarBg = (name: string) => {
+    const code = name.charCodeAt(0) % 4;
+    switch (code) {
+      case 0: return 'bg-[#4285F4]'; // Google Blue
+      case 1: return 'bg-[#EA4335]'; // Google Red
+      case 2: return 'bg-[#FBBC05]'; // Google Yellow
+      default: return 'bg-[#34A853]'; // Google Green
+    }
+  };
+
+  return (
+    <section id="reviews" className="py-24 px-6 md:px-12 xl:px-20 bg-white border-b border-primary/10">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Block with overall score pill */}
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 text-center md:text-left gap-6 border-b border-primary/10 pb-8">
+          <div>
+            <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-primary/50 uppercase">
+              № 06 / GENERAL APPRAISALS
+            </span>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold mt-2 text-primary tracking-tight">
+              Guest Experiences
+            </h2>
+          </div>
+          {/* 
+          <div className="flex items-center gap-3 bg-background-warm px-4 py-2 border border-primary/15 select-none text-primary">
+            <span className="font-serif text-lg font-bold">4.9</span>
+            {renderStars(4.9, 14)}
+          </div> */}
+        </div>
+
+        {/* Dynamic Reviews Deck list - Marquee */}
+        <div className="relative overflow-hidden pause-marquee -mx-6 md:-mx-12 xl:-mx-20 px-6 md:px-12 xl:px-20 py-4 group">
+          <div className="flex w-max animate-marquee gap-8 items-stretch">
+            {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testi, i) => (
+              <motion.div
+                key={`${testi.id}-${i}`}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+                onClick={() => setSelectedReview(testi)}
+                className="w-[300px] md:w-[380px] p-8 bg-background-warm rounded-xl space-y-5 border border-primary/10 flex flex-col justify-between text-left hover:border-primary/25 cursor-pointer hover:shadow-xs transition-all duration-300 flex-shrink-0"
+                id={`review-card-${testi.id}-${i}`}
+              >
+                <div className="space-y-4">
+                  {testi.image && (
+                    <div className="h-44 w-full overflow-hidden border border-primary/5 bg-white mb-4 rounded-xl">
+                      <img
+                        src={testi.image}
+                        alt={`${testi.author}'s review representation`}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02] rounded-xl"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  )}
+                  <div>{renderStars(testi.rating, 12)}</div>
+                  <p className="font-serif text-sm sm:text-base text-primary/80 italic leading-relaxed">
+                    "{testi.comment}"
+                  </p>
+                </div>
+                <div className="font-sans text-[10px] font-bold tracking-widest text-primary/60 pt-4 border-t border-primary/10 uppercase">
+                  — {testi.author}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Google Review Styled Modal */}
+      <AnimatePresence>
+        {selectedReview && (
+          <div className="fixed inset-0 bg-primary/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-lg shadow-2xl max-w-xl w-full p-6 md:p-8 relative text-left border border-primary/5 font-sans"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedReview(null)}
+                className="absolute top-4 right-4 p-1.5 text-primary/40 hover:text-primary rounded-full hover:bg-primary/5 transition-all cursor-pointer"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+
+
+              {/* User Profile Info (Google Style) */}
+              <div className="flex items-center gap-3.5 mb-4">
+                <div className={`w-11 h-11 rounded-full text-white flex items-center justify-center font-bold text-lg select-none shadow-xs ${getAvatarBg(selectedReview.author)}`}>
+                  {selectedReview.author.charAt(0)}
+                </div>
+                <div className="flex flex-col text-left">
+                  <div className="flex items-center gap-2">
+                    <span className="font-sans font-bold text-sm text-primary leading-tight">
+                      {selectedReview.author}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Star Rating & Relative Time */}
+              <div className="flex items-center gap-3 mb-4">
+                {renderStars(selectedReview.rating, 16)}
+                <span className="text-[10px] text-primary/40 font-sans tracking-wide">
+                  {selectedReview.date || "Just now"}
+                </span>
+              </div>
+
+              {/* Comment Content */}
+              <p className="font-sans text-xs sm:text-sm text-primary/85 leading-relaxed text-left mb-6 select-text whitespace-pre-line">
+                {selectedReview.comment.replace(/"/g, '')}
+              </p>
+
+              {/* Attached Review Photo */}
+              {selectedReview.image && (
+                <div className="mt-4 border-t border-primary/5 pt-4">
+                  <span className="font-sans text-[10px] font-extrabold uppercase tracking-wider text-primary/40 block mb-2">
+                    Photos Attached by Reviewer
+                  </span>
+                  <div className="max-h-60 w-full overflow-hidden rounded-md border border-primary/5 bg-background-warm">
+                    <img
+                      src={selectedReview.image}
+                      alt="Review attachment"
+                      className="w-full h-full object-cover max-h-60 rounded-xl"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
