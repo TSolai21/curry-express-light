@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BookOpen, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import chefImg from '../assets/chef.jpg';
 
 export default function AboutSection() {
   const [showFullStory, setShowFullStory] = useState(false);
@@ -25,15 +26,19 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 relative z-10">
         
         {/* Left Side: Chef Image placed in static art frames */}
-        <div className="w-full lg:w-1/2">
-          <div className="relative border border-primary/15 p-3.5 bg-white rounded-xl">
-            <div className="border border-primary/5 overflow-hidden">
-              <img
-                alt="Artisan chef storytelling"
-                className="w-full h-auto select-none filter contrast-[1.02] rounded-xl"
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80"
-                referrerPolicy="no-referrer"
-              />
+        <div className="w-full lg:w-1/2 flex justify-center py-6">
+          <div className="relative w-full max-w-md">
+            {/* Back card */}
+            <div className="absolute inset-0 bg-[#EFEBE4] border border-[#E3DEC4] shadow-sm transform -rotate-3 translate-x-2 translate-y-3 rounded-sm"></div>
+            {/* Front card (Polaroid style) */}
+            <div className="relative bg-white p-3 pb-4 shadow-md border border-gray-100 rounded-sm">
+              <div className="overflow-hidden">
+                <img
+                  alt="Indian Master Chef"
+                  className="w-full h-auto select-none"
+                  src={chefImg}
+                />
+              </div>
             </div>
           </div>
         </div>
