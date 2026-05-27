@@ -46,9 +46,40 @@
 }
 
 @layer utilities {
+  .bg-grid {
+    position: relative;
+  }
+  
+  .bg-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: 
+      linear-gradient(to right, rgba(43, 30, 26, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(43, 30, 26, 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent), linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+    z-index: 0;
+  }
+
   .bg-dotted {
+    position: relative;
+  }
+  
+  .bg-dotted::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
     background-image: radial-gradient(rgba(43, 30, 26, 0.1) 1.05px, transparent 1.05px);
     background-size: 24px 24px;
+    mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent), linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+    z-index: 0;
   }
 
   .level-1-card {

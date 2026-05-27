@@ -10,7 +10,7 @@ interface SpecialOffersProps {
 
 export default function SpecialOffers({ onOrderCombo, onOpenMenu }: SpecialOffersProps) {
   return (
-    <section id="offers" className="relative py-24 px-6 md:px-12 xl:px-20 bg-white bg-dotted border-b border-primary/10 overflow-hidden">
+    <section id="offers" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-background-warm bg-dotted overflow-hidden">
       {/* Decorative Floating Herb */}
       <div className="absolute top-32 right-[10%] pointer-events-none -z-0 animate-float-slow opacity-15 hidden md:block">
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-[#6E7260]">
@@ -41,7 +41,7 @@ export default function SpecialOffers({ onOrderCombo, onOpenMenu }: SpecialOffer
         {/* Offers Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Family Feast Combo */}
-          <div className="bg-background-warm rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 border border-primary/10 hover:border-primary/20 transition-all duration-300">
+          <div className="bg-white rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 border border-primary/10 hover:border-primary/20 transition-all duration-300">
             <div className="w-full md:w-3/5 space-y-4 text-left">
               <div className="inline-block bg-white border border-primary/20 text-primary px-3 py-1 rounded-xl font-sans text-[8px] font-bold uppercase tracking-[0.2em]">
                 Family Value
@@ -73,7 +73,7 @@ export default function SpecialOffers({ onOrderCombo, onOpenMenu }: SpecialOffer
           </div>
 
           {/* Business Lunch Box */}
-          <div className="bg-background-warm rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 border border-primary/10 hover:border-primary/20 transition-all duration-300">
+          <div className="bg-white rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 border border-primary/10 hover:border-primary/20 transition-all duration-300">
             <div className="w-full md:w-3/5 space-y-4 text-left">
               <div className="inline-block bg-white border border-primary/20 text-primary px-3 py-1 rounded-xl font-sans text-[8px] font-bold uppercase tracking-[0.2em]">
                 Daily 11AM - 3PM
@@ -104,6 +104,18 @@ export default function SpecialOffers({ onOrderCombo, onOpenMenu }: SpecialOffer
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Wave Shape Divider */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
+        <svg 
+          viewBox="0 0 1200 120" 
+          preserveAspectRatio="none" 
+          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
+          fill="#ffffff"
+        >
+          <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
+        </svg>
       </div>
     </section>
   );

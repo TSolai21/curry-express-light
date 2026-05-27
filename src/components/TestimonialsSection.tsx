@@ -58,7 +58,7 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
   };
 
   return (
-    <section id="reviews" className="relative py-24 px-6 md:px-12 xl:px-20 bg-white border-b border-primary/10 overflow-hidden">
+    <section id="reviews" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-white overflow-hidden">
       {/* Decorative Floating Circles representing spices/seeds */}
       <div className="absolute top-1/2 right-[5%] pointer-events-none -z-0 animate-float-fast opacity-10 hidden lg:block">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-primary">
@@ -77,11 +77,6 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
               Guest Experiences
             </h2>
           </div>
-          {/* 
-          <div className="flex items-center gap-3 bg-background-warm px-4 py-2 border border-primary/15 select-none text-primary">
-            <span className="font-serif text-lg font-bold">4.9</span>
-            {renderStars(4.9, 14)}
-          </div> */}
         </div>
 
         {/* Dynamic Reviews Deck list - Marquee */}
@@ -190,6 +185,18 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
           </div>
         )}
       </AnimatePresence>
+
+      {/* Wave Shape Divider */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
+        <svg 
+          viewBox="0 0 1200 120" 
+          preserveAspectRatio="none" 
+          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
+          fill="#F5F2ED"
+        >
+          <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
+        </svg>
+      </div>
     </section>
   );
 }

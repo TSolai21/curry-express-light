@@ -7,7 +7,7 @@ export default function AboutSection() {
   const [showFullStory, setShowFullStory] = useState(false);
 
   return (
-    <section id="about" className="relative py-24 px-6 md:px-12 xl:px-20 bg-background-warm border-y border-primary/10 overflow-hidden">
+    <section id="about" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-white overflow-hidden">
       {/* Decorative Floating Star Anise */}
       <div className="absolute bottom-32 left-[5%] pointer-events-none -z-0 animate-float-slower opacity-15 hidden md:block">
         <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-secondary">
@@ -124,6 +124,18 @@ export default function AboutSection() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Wave Shape Divider */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
+        <svg 
+          viewBox="0 0 1200 120" 
+          preserveAspectRatio="none" 
+          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
+          fill="#F5F2ED"
+        >
+          <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
+        </svg>
+      </div>
     </section>
   );
 }

@@ -7,7 +7,7 @@ interface MapSectionProps {
 
 export default function MapSection({ onOrderNow }: MapSectionProps) {
   return (
-    <section id="contact" className="py-24 px-6 md:px-12 xl:px-20 bg-background-warm bg-dotted border-b border-primary/10">
+    <section id="contact" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-background-warm bg-dotted overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-stretch">
           
@@ -108,6 +108,18 @@ export default function MapSection({ onOrderNow }: MapSectionProps) {
           </div>
 
         </div>
+      </div>
+
+      {/* Wave Shape Divider */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
+        <svg 
+          viewBox="0 0 1200 120" 
+          preserveAspectRatio="none" 
+          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
+          fill="#2B1E1A"
+        >
+          <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
+        </svg>
       </div>
     </section>
   );

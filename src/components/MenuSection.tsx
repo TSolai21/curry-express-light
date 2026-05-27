@@ -38,14 +38,14 @@ export default function MenuSection({ onSelectCategory, onOpenMenuWithCategory }
   ];
 
   return (
-    <section id="menu" className="relative bg-background-warm py-24 px-6 md:px-12 xl:px-20 border-y border-primary/10 overflow-hidden">
+    <section id="menu" className="relative bg-white pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 overflow-hidden">
       {/* Decorative Floating Spices/Herbs */}
       <div className="absolute top-40 left-[4%] pointer-events-none -z-0 animate-float-slow opacity-15 hidden lg:block">
         <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-secondary">
           <path d="M12 2L14 9L21 7L16 12L21 17L14 15L12 22L10 15L3 17L8 12L3 7L10 9L12 2Z" />
         </svg>
       </div>
-      <div className="absolute bottom-32 right-[6%] pointer-events-none -z-0 animate-float-slower opacity-10 hidden md:block">
+      <div className="absolute bottom-40 right-[6%] pointer-events-none -z-0 animate-float-slower opacity-10 hidden md:block">
         <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-primary">
           <circle cx="12" cy="12" r="8" strokeDasharray="4 4" />
         </svg>
@@ -68,7 +68,7 @@ export default function MenuSection({ onSelectCategory, onOpenMenuWithCategory }
           {sections.map((section, idx) => (
             <div
               key={idx}
-              className="level-1-card bg-white rounded-xl border border-primary/10 overflow-hidden flex flex-col group p-2 pb-6"
+              className="level-1-card bg-background-warm rounded-xl border border-primary/10 overflow-hidden flex flex-col group p-2 pb-6"
             >
               <div className="h-68 overflow-hidden relative border border-primary/5">
                 <img
@@ -107,6 +107,18 @@ export default function MenuSection({ onSelectCategory, onOpenMenuWithCategory }
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Wave Shape Divider */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
+        <svg 
+          viewBox="0 0 1200 120" 
+          preserveAspectRatio="none" 
+          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
+          fill="#F5F2ED"
+        >
+          <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
+        </svg>
       </div>
     </section>
   );
