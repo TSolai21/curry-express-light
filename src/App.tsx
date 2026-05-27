@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Testimonial } from './types';
-import { INITIAL_TESTIMONIALS } from './data';
+import { Testimonial, SpecialOffer } from './types';
+import { supabase } from './lib/supabase';
 import { ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -29,6 +29,10 @@ export default function App() {
   const [menuInitialCategory, setMenuInitialCategory] = useState<string>('all');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
+  // Dynamic content
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [offers, setOffers] = useState<SpecialOffer[]>([]);
+
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
@@ -37,25 +41,22 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Fetch initial data from Supabase
+    async function loadData() {
+      const [reviewsRes, offersRes] = await Promise.all([
+        supabase.from('reviews').select('*').order('created_at', { ascending: false }),
+        supabase.from('offers').select('*').order('created_at', { ascending: false })
+      ]);
+      if (reviewsRes.data) setTestimonials(reviewsRes.data);
+      if (offersRes.data) setOffers(offersRes.data);
+    }
+    loadData();
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  // Customer transactions state managers (Only testimonials preserved)
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(INITIAL_TESTIMONIALS);
-
-  // Retrieve persistent records from localStorage on mount
-  useEffect(() => {
-    const cachedReviews = localStorage.getItem('curry_express_reviews');
-
-    if (cachedReviews) {
-      try {
-        setTestimonials(JSON.parse(cachedReviews));
-      } catch (e) {
-        console.error('Failed parsing reviews cache', e);
-      }
-    }
-  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -104,26 +105,6 @@ export default function App() {
     }
   };
 
-  const handlePostReview = (comment: string, author: string, rating: number, image?: string) => {
-    const newReview: Testimonial = {
-      id: `review-${Date.now()}`,
-      rating,
-      comment,
-      author,
-      date: 'Just now',
-      image
-    };
-    const updatedReviews = [newReview, ...testimonials];
-    setTestimonials(updatedReviews);
-    localStorage.setItem('curry_express_reviews', JSON.stringify(updatedReviews));
-  };
-
-  const handleDeleteReview = (id: string) => {
-    const updatedReviews = testimonials.filter((t) => t.id !== id);
-    setTestimonials(updatedReviews);
-    localStorage.setItem('curry_express_reviews', JSON.stringify(updatedReviews));
-  };
-
   const handleOpenMenuCategory = (category: string) => {
     setMenuInitialCategory(category);
     handleNavigate('menu');
@@ -163,6 +144,7 @@ export default function App() {
 
           {/* 3. Limited Time Offers */}
           <SpecialOffers
+            offers={offers}
             onOrderCombo={handleOrderRedirect}
             onOpenMenu={() => handleOpenMenuCategory('all')}
           />
@@ -174,7 +156,9 @@ export default function App() {
           <GallerySection />
 
           {/* 6. Guest Testimonial Wall */}
-          <TestimonialsSection testimonials={testimonials} />
+          {testimonials.length > 0 && (
+            <TestimonialsSection testimonials={testimonials} />
+          )}
 
           {/* 7. Culinary Kitchen visits & Directions */}
           <MapSection onOrderNow={handleOrderRedirect} />
@@ -189,9 +173,6 @@ export default function App() {
       ) : (
         <main>
           <AdminPage
-            testimonials={testimonials}
-            onAddReview={handlePostReview}
-            onDeleteReview={handleDeleteReview}
             onBackToHome={() => handleNavigate('home')}
           />
           </main>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Star, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Testimonial } from '../types';
+import logo from '../assets/logo.png';
 
 interface TestimonialsSectionProps {
   testimonials: Testimonial[];
@@ -9,6 +10,11 @@ interface TestimonialsSectionProps {
 
 export default function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
   const [selectedReview, setSelectedReview] = useState<Testimonial | null>(null);
+
+  const isMarquee = testimonials.length >= 3;
+  const displayTestimonials = isMarquee 
+    ? [...testimonials, ...testimonials, ...testimonials, ...testimonials] 
+    : testimonials;
 
   const renderStars = (ratingNum: number, size = 16, fillClass = "text-amber-500 fill-amber-500") => {
     const starsArray = [];
@@ -79,10 +85,10 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
           </div>
         </div>
 
-        {/* Dynamic Reviews Deck list - Marquee */}
-        <div className="relative overflow-hidden pause-marquee -mx-6 md:-mx-12 xl:-mx-20 px-6 md:px-12 xl:px-20 py-4 group">
-          <div className="flex w-max animate-marquee gap-8 items-stretch">
-            {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testi, i) => (
+        {/* Dynamic Reviews Deck list */}
+        <div className={`relative py-4 group ${isMarquee ? 'overflow-hidden pause-marquee -mx-6 md:-mx-12 xl:-mx-20 px-6 md:px-12 xl:px-20' : 'overflow-x-auto pb-8'}`}>
+          <div className={`flex gap-8 items-stretch ${isMarquee ? 'w-max animate-marquee' : 'w-max md:w-full md:justify-center'}`}>
+            {displayTestimonials.map((testi, i) => (
               <motion.div
                 key={`${testi.id}-${i}`}
                 initial={{ opacity: 0, scale: 0.98 }}
@@ -93,16 +99,14 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
                 id={`review-card-${testi.id}-${i}`}
               >
                 <div className="space-y-4">
-                  {testi.image && (
-                    <div className="h-44 w-full overflow-hidden border border-primary/5 bg-white mb-4 rounded-xl">
-                      <img
-                        src={testi.image}
-                        alt={`${testi.author}'s review representation`}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02] rounded-xl"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-                  )}
+                  <div className="h-44 w-full overflow-hidden border border-primary/5 bg-white mb-4 rounded-xl flex items-center justify-center">
+                    <img
+                      src={testi.image || logo}
+                      alt={`${testi.author}'s review representation`}
+                      className={`w-full h-full transition-transform duration-500 hover:scale-[1.02] rounded-xl ${testi.image ? 'object-cover' : 'object-contain opacity-30 p-8'}`}
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
                   <div>{renderStars(testi.rating, 12)}</div>
                   <p className="font-serif text-sm sm:text-base text-primary/80 italic leading-relaxed">
                     "{testi.comment}"

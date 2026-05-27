@@ -34,12 +34,10 @@ export interface SpecialOffer {
   id: string;
   title: string;
   description: string;
-  priceText: string;
-  priceValue: number;
+  price_text: string;
   tag: string;
-  tagColor: string; // 'primary' | 'secondary'
-  iconName: string; // Material or Lucide symbol representation
-  itemsAdded: string[]; // item IDs to put in cart when clicked
+  image: string;
+  created_at?: string;
 }
 
 export type OrderStatus = 'idle' | 'submitting' | 'preparing' | 'spicing' | 'out_for_delivery' | 'arrived';
