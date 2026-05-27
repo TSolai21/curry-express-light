@@ -130,6 +130,7 @@ export default function Hero({ onOpenMenu, onOrderNow }: HeroProps) {
           <div className="w-full h-full overflow-hidden border border-primary/10 rounded-lg relative flex flex-col">
             <Swiper
               modules={[Autoplay, Pagination]}
+              loop={true}
               autoplay={{ delay: 4000, disableOnInteraction: false }}
               pagination={{ clickable: true }}
               onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
