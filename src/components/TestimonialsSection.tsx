@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Star, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import Cropper from 'react-easy-crop';
 import { Testimonial } from '../types';
 import logo from '../assets/logo.png';
 
@@ -11,7 +12,7 @@ interface TestimonialsSectionProps {
 export default function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
   const [selectedReview, setSelectedReview] = useState<Testimonial | null>(null);
 
-  const isMarquee = testimonials.length >= 3;
+  const isMarquee = testimonials.length > 3;
   const displayTestimonials = isMarquee 
     ? [...testimonials, ...testimonials, ...testimonials, ...testimonials] 
     : testimonials;
@@ -99,13 +100,27 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
                 id={`review-card-${testi.id}-${i}`}
               >
                 <div className="space-y-4">
-                  <div className="h-44 w-full overflow-hidden border border-primary/5 bg-white mb-4 rounded-xl flex items-center justify-center">
-                    <img
-                      src={testi.image || logo}
-                      alt={`${testi.author}'s review representation`}
-                      className={`w-full h-full transition-transform duration-500 hover:scale-[1.02] rounded-xl ${testi.image ? 'object-cover' : 'object-contain opacity-30 p-8'}`}
-                      referrerPolicy="no-referrer"
-                    />
+                  <div className="h-44 w-full overflow-hidden border border-primary/5 bg-white mb-4 rounded-xl flex items-center justify-center relative">
+                    {testi.image ? (
+                      <Cropper
+                        image={testi.image}
+                        crop={testi.image_settings ? { x: testi.image_settings.x, y: testi.image_settings.y } : { x: 0, y: 0 }}
+                        zoom={testi.image_settings?.zoom || 1}
+                        aspect={1}
+                        objectFit="cover"
+                        onCropChange={() => {}}
+                        onZoomChange={() => {}}
+                        showGrid={false}
+                        classes={{ containerClassName: 'pointer-events-none' }}
+                        style={{ cropAreaStyle: { border: 0, boxShadow: 'none' } }}
+                      />
+                    ) : (
+                      <img
+                        src={logo}
+                        alt={`${testi.author}'s review representation`}
+                        className="w-full h-full object-contain opacity-30 p-8"
+                      />
+                    )}
                   </div>
                   <div>{renderStars(testi.rating, 12)}</div>
                   <p className="font-serif text-sm sm:text-base text-primary/80 italic leading-relaxed">
@@ -175,12 +190,18 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
                   <span className="font-sans text-[10px] font-extrabold uppercase tracking-wider text-primary/40 block mb-2">
                     Photos Attached by Reviewer
                   </span>
-                  <div className="max-h-60 w-full overflow-hidden rounded-md border border-primary/5 bg-background-warm">
-                    <img
-                      src={selectedReview.image}
-                      alt="Review attachment"
-                      className="w-full h-full object-cover max-h-60 rounded-xl"
-                      referrerPolicy="no-referrer"
+                  <div className="max-h-60 w-full aspect-square overflow-hidden rounded-md border border-primary/5 bg-background-warm relative">
+                    <Cropper
+                      image={selectedReview.image}
+                      crop={selectedReview.image_settings ? { x: selectedReview.image_settings.x, y: selectedReview.image_settings.y } : { x: 0, y: 0 }}
+                      zoom={selectedReview.image_settings?.zoom || 1}
+                      aspect={1}
+                      objectFit="cover"
+                      onCropChange={() => {}}
+                      onZoomChange={() => {}}
+                      showGrid={false}
+                      classes={{ containerClassName: 'pointer-events-none' }}
+                      style={{ cropAreaStyle: { border: 0, boxShadow: 'none' } }}
                     />
                   </div>
                 </div>

@@ -28,6 +28,7 @@ export interface Testimonial {
   author: string;
   date: string;
   image?: string;
+  image_settings?: { x: number; y: number; zoom: number };
 }
 
 export interface SpecialOffer {
@@ -37,6 +38,7 @@ export interface SpecialOffer {
   price_text: string;
   tag: string;
   image: string;
+  image_settings?: { x: number; y: number; zoom: number };
   created_at?: string;
 }
 

@@ -61,7 +61,7 @@ export default function MobileBottomNav({ currentPage, currentSection, onNavigat
   );
 }
 
-function NavTab({ item, isActive, onClick }: { item: any, isActive: boolean, onClick: () => void }) {
+function NavTab({ item, isActive, onClick }: { key?: string; item: any, isActive: boolean, onClick: () => void }) {
   const Icon = item.icon;
   return (
     <button

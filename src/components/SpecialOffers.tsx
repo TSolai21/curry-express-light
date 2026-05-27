@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import Cropper from 'react-easy-crop';
 import { SpecialOffer } from '../types';
 
 interface SpecialOffersProps {
@@ -66,11 +67,18 @@ export default function SpecialOffers({ offers, onOrderCombo, onOpenMenu }: Spec
                 </button>
               </div>
               
-              <div className="w-full md:w-2/5 aspect-square bg-white rounded-xl flex items-center justify-center border border-primary/10 overflow-hidden select-none p-1">
-                <img
-                  src={offer.image}
-                  alt={offer.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300 rounded-xl"
+              <div className="w-full md:w-2/5 aspect-[4/3] bg-white rounded-xl flex items-center justify-center border border-primary/10 overflow-hidden relative">
+                <Cropper
+                  image={offer.image}
+                  crop={offer.image_settings ? { x: offer.image_settings.x, y: offer.image_settings.y } : { x: 0, y: 0 }}
+                  zoom={offer.image_settings?.zoom || 1}
+                  aspect={4 / 3}
+                  objectFit="cover"
+                  onCropChange={() => {}}
+                  onZoomChange={() => {}}
+                  showGrid={false}
+                  classes={{ containerClassName: 'pointer-events-none' }}
+                  style={{ cropAreaStyle: { border: 0, boxShadow: 'none' } }}
                 />
               </div>
             </div>

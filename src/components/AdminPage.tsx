@@ -3,6 +3,7 @@ import { Star, Check, Trash2, LogOut, Lock, ArrowLeft, Image as ImageIcon, Tag, 
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { Testimonial, SpecialOffer } from '../types';
+import Cropper from 'react-easy-crop';
 
 interface AdminPageProps {
   onBackToHome: () => void;
@@ -124,6 +125,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
   };
 
   const [isUploading, setIsUploading] = useState(false);
+  const [imageSettings, setImageSettings] = useState<{ x: number; y: number; zoom: number }>({ x: 0, y: 0, zoom: 1 });
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, setUrl: (url: string) => void) => {
     const file = e.target.files?.[0];
@@ -146,6 +148,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
 
     const { data } = supabase.storage.from('images').getPublicUrl(filePath);
     setUrl(data.publicUrl);
+    setImageSettings({ x: 0, y: 0, zoom: 1 });
     setIsUploading(false);
     showSuccess('Image uploaded successfully!');
   };
@@ -177,10 +180,10 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
     let data, error;
 
     if (editingReviewId) {
-      const res = await supabase.from('reviews').update({ author, comment, rating, image: reviewImageUrl || null }).eq('id', editingReviewId).select();
+      const res = await supabase.from('reviews').update({ author, comment, rating, image: reviewImageUrl || null, image_settings: imageSettings }).eq('id', editingReviewId).select();
       data = res.data; error = res.error;
     } else {
-      const res = await supabase.from('reviews').insert([{ author, comment, rating, image: reviewImageUrl || null }]).select();
+      const res = await supabase.from('reviews').insert([{ author, comment, rating, image: reviewImageUrl || null, image_settings: imageSettings }]).select();
       data = res.data; error = res.error;
     }
 
@@ -191,7 +194,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
       return;
     }
 
-    if (data) {
+    if (data && data[0]) {
       if (editingReviewId) {
         setReviews(reviews.map(r => r.id === editingReviewId ? data[0] : r));
       } else {
@@ -239,7 +242,8 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
       description: offerDescription,
       price_text: offerPriceText,
       tag: offerTag,
-      image: offerImageUrl
+      image: offerImageUrl,
+      image_settings: imageSettings
     };
 
     if (editingOfferId) {
@@ -257,7 +261,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
       return;
     }
 
-    if (data) {
+    if (data && data[0]) {
       if (editingOfferId) {
         setOffers(offers.map(o => o.id === editingOfferId ? data[0] : o));
       } else {
@@ -293,6 +297,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
       setOfferTag('');
       setOfferImageUrl('');
     }
+    setImageSettings({ x: 0, y: 0, zoom: 1 });
     setIsModalOpen(true);
   };
 
@@ -302,6 +307,14 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
     setComment(testi.comment);
     setRating(testi.rating);
     setReviewImageUrl(testi.image || '');
+    let settings = { x: 0, y: 0, zoom: 1 };
+    if (testi.image_settings) {
+      try {
+        const parsed = typeof testi.image_settings === 'string' ? JSON.parse(testi.image_settings) : testi.image_settings;
+        settings = { ...settings, ...parsed };
+      } catch (e) {}
+    }
+    setImageSettings(settings);
     setActiveTab('reviews');
     setIsModalOpen(true);
   };
@@ -313,6 +326,14 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
     setOfferPriceText(offer.price_text);
     setOfferTag(offer.tag);
     setOfferImageUrl(offer.image);
+    let settings = { x: 0, y: 0, zoom: 1 };
+    if (offer.image_settings) {
+      try {
+        const parsed = typeof offer.image_settings === 'string' ? JSON.parse(offer.image_settings) : offer.image_settings;
+        settings = { ...settings, ...parsed };
+      } catch (e) {}
+    }
+    setImageSettings(settings);
     setActiveTab('offers');
     setIsModalOpen(true);
   };
@@ -593,80 +614,86 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                 paginatedReviews.length === 0 ? (
                   <tr><td colSpan={5} className="p-12 text-center text-primary/50 text-xs">No reviews found in the database.</td></tr>
                 ) : (
-                  paginatedReviews.map((testi) => (
-                    <tr key={testi.id} className="border-b border-primary/5 hover:bg-background-warm/30 transition-colors">
-                      <td className="p-4 pl-6">
-                        {testi.image ? (
-                          <img src={testi.image} alt={testi.author} className="w-12 h-12 rounded-lg object-cover border border-primary/10" />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-background-warm flex items-center justify-center text-primary/30 border border-primary/10">
-                            <ImageIcon className="w-4 h-4" />
+                  paginatedReviews.map((testi) => {
+                    if (!testi) return null;
+                    return (
+                      <tr key={testi.id} className="border-b border-primary/5 hover:bg-background-warm/30 transition-colors">
+                        <td className="p-4 pl-6">
+                          {testi.image ? (
+                            <img src={testi.image} alt={testi.author} className="w-12 h-12 rounded-lg object-cover border border-primary/10" />
+                          ) : (
+                            <div className="w-12 h-12 rounded-lg bg-background-warm flex items-center justify-center text-primary/30 border border-primary/10">
+                              <ImageIcon className="w-4 h-4" />
+                            </div>
+                          )}
+                        </td>
+                        <td className="p-4">
+                          <div className="font-serif text-sm font-bold text-primary">{testi.author}</div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex gap-0.5">
+                            {Array(testi.rating).fill(0).map((_, i) => <Star key={i} className="w-3 h-3 text-secondary fill-secondary" />)}
                           </div>
-                        )}
-                      </td>
-                      <td className="p-4">
-                        <div className="font-serif text-sm font-bold text-primary">{testi.author}</div>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex gap-0.5">
-                          {Array(testi.rating).fill(0).map((_, i) => <Star key={i} className="w-3 h-3 text-secondary fill-secondary" />)}
-                        </div>
-                      </td>
-                      <td className="p-4 text-xs text-primary/70 truncate max-w-xs" title={testi.comment}>
-                        "{testi.comment}"
-                      </td>
-                      <td className="p-4 pr-6">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => handleEditReview(testi)} className="p-2 bg-primary/5 text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" title="Edit">
-                            <Edit2 className="w-4 h-4" />
-                          </button>
-                          <button onClick={() => handleDeleteReview(testi.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" title="Delete">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                        </td>
+                        <td className="p-4 text-xs text-primary/70 truncate max-w-xs" title={testi.comment}>
+                          "{testi.comment}"
+                        </td>
+                        <td className="p-4 pr-6">
+                          <div className="flex justify-end gap-2">
+                            <button onClick={() => handleEditReview(testi)} className="p-2 bg-primary/5 text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" title="Edit">
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => handleDeleteReview(testi.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" title="Delete">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
                 )
               ) : (
                 paginatedOffers.length === 0 ? (
                   <tr><td colSpan={5} className="p-12 text-center text-primary/50 text-xs">No offers found in the database.</td></tr>
                 ) : (
-                  paginatedOffers.map((offer) => (
-                    <tr key={offer.id} className="border-b border-primary/5 hover:bg-background-warm/30 transition-colors">
-                      <td className="p-4 pl-6">
-                        {offer.image ? (
-                          <img src={offer.image} alt={offer.title} className="w-12 h-12 rounded-lg object-cover border border-primary/10" />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-background-warm flex items-center justify-center text-primary/30 border border-primary/10">
-                            <Tag className="w-4 h-4" />
+                  paginatedOffers.map((offer) => {
+                    if (!offer) return null;
+                    return (
+                      <tr key={offer.id} className="border-b border-primary/5 hover:bg-background-warm/30 transition-colors">
+                        <td className="p-4 pl-6">
+                          {offer.image ? (
+                            <img src={offer.image} alt={offer.title} className="w-12 h-12 rounded-lg object-cover border border-primary/10" />
+                          ) : (
+                            <div className="w-12 h-12 rounded-lg bg-background-warm flex items-center justify-center text-primary/30 border border-primary/10">
+                              <Tag className="w-4 h-4" />
+                            </div>
+                          )}
+                        </td>
+                        <td className="p-4">
+                          <div className="font-serif text-sm font-bold text-primary">{offer.title}</div>
+                          <div className="text-[10px] text-primary/60 font-bold uppercase tracking-wider">{offer.price_text}</div>
+                        </td>
+                        <td className="p-4">
+                          <span className="bg-background-warm px-2 py-1 text-[9px] uppercase tracking-wider border border-primary/10 text-primary/70 rounded-md">
+                            {offer.tag}
+                          </span>
+                        </td>
+                        <td className="p-4 text-xs text-primary/70 truncate max-w-xs" title={offer.description}>
+                          {offer.description}
+                        </td>
+                        <td className="p-4 pr-6">
+                          <div className="flex justify-end gap-2">
+                            <button onClick={() => handleEditOffer(offer)} className="p-2 bg-primary/5 text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" title="Edit">
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => handleDeleteOffer(offer.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" title="Delete">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
-                        )}
-                      </td>
-                      <td className="p-4">
-                        <div className="font-serif text-sm font-bold text-primary">{offer.title}</div>
-                        <div className="text-[10px] text-primary/60 font-bold uppercase tracking-wider">{offer.price_text}</div>
-                      </td>
-                      <td className="p-4">
-                        <span className="bg-background-warm px-2 py-1 text-[9px] uppercase tracking-wider border border-primary/10 text-primary/70 rounded-md">
-                          {offer.tag}
-                        </span>
-                      </td>
-                      <td className="p-4 text-xs text-primary/70 truncate max-w-xs" title={offer.description}>
-                        {offer.description}
-                      </td>
-                      <td className="p-4 pr-6">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => handleEditOffer(offer)} className="p-2 bg-primary/5 text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" title="Edit">
-                            <Edit2 className="w-4 h-4" />
-                          </button>
-                          <button onClick={() => handleDeleteOffer(offer.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" title="Delete">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                        </td>
+                      </tr>
+                    );
+                  })
                 )
               )}
             </tbody>
@@ -778,7 +805,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                           className="w-full text-xs text-primary file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-[0.1em] file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
                         />
                         {reviewImageUrl && (
-                          <div className="text-[10px] text-primary/70 italic flex items-center gap-1">
+                          <div className="text-[10px] text-primary/70 italic flex items-center gap-1 mt-1">
                             <Check className="w-3 h-3 text-green-500" /> Image uploaded
                           </div>
                         )}
@@ -889,7 +916,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                           className="w-full text-xs text-primary file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-[0.1em] file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
                         />
                         {offerImageUrl && (
-                          <div className="text-[10px] text-primary/70 italic flex items-center gap-1">
+                          <div className="text-[10px] text-primary/70 italic flex items-center gap-1 mt-1">
                             <Check className="w-3 h-3 text-green-500" /> Image uploaded
                           </div>
                         )}
@@ -927,11 +954,15 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                   <div className="w-full max-w-[380px] p-8 bg-white rounded-xl space-y-5 border border-primary/10 flex flex-col justify-between text-left shadow-lg scale-90 md:scale-100 origin-center">
                     <div className="space-y-4">
                       {reviewImageUrl && (
-                        <div className="h-44 w-full overflow-hidden border border-primary/5 bg-background-warm mb-4 rounded-xl">
-                          <img
-                            src={reviewImageUrl}
-                            alt="Review Preview"
-                            className="w-full h-full object-cover rounded-xl"
+                        <div className="h-44 w-full overflow-hidden border border-primary/5 bg-background-warm mb-4 rounded-xl relative">
+                          <Cropper
+                            image={reviewImageUrl}
+                            crop={{ x: imageSettings?.x || 0, y: imageSettings?.y || 0 }}
+                            zoom={imageSettings?.zoom || 1}
+                            aspect={1}
+                            onCropChange={(crop) => setImageSettings(s => ({ ...s, x: crop.x, y: crop.y }))}
+                            onZoomChange={(zoom) => setImageSettings(s => ({ ...s, zoom }))}
+                            showGrid={false}
                           />
                         </div>
                       )}
@@ -959,31 +990,32 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                           {offerTag}
                         </div>
                       )}
-                      <h3 className="font-serif text-xl sm:text-2xl text-primary font-bold">
+                      <h4 className="font-serif text-3xl font-bold text-primary tracking-tight">
                         {offerTitle || 'Offer Title'}
-                      </h3>
-                      <p className="font-sans text-xs sm:text-sm text-primary/70 leading-relaxed">
-                        {offerDescription || 'Feeds 4-6 guests. Includes...'}
+                      </h4>
+                      <p className="text-primary/70 text-sm leading-relaxed">
+                        {offerDescription || 'Describe the delicious details of this offer...'}
                       </p>
-                      <span className="block font-serif text-lg text-primary italic font-medium">
-                        {offerPriceText || 'Price Text'}
-                      </span>
+                      <div className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-primary pt-2">
+                        {offerPriceText || 'Price Details'}
+                      </div>
                       <button className="border border-primary/25 text-primary px-5 py-2.5 rounded-xl font-sans text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-primary/5 transition-colors cursor-pointer mt-2" disabled>
                         Order on DoorDash
                       </button>
                     </div>
-
-                    <div className="w-full md:w-2/5 aspect-square bg-background-warm rounded-xl flex items-center justify-center border border-primary/10 overflow-hidden select-none p-1">
-                      {offerImageUrl ? (
-                        <img
-                          src={offerImageUrl}
-                          alt="Offer Preview"
-                          className="w-full h-full object-cover rounded-xl"
-                        />
-                      ) : (
-                        <div className="text-primary/30 text-xs font-sans uppercase font-bold tracking-widest">Image</div>
-                      )}
-                    </div>
+                    {offerImageUrl && (
+                      <div className="w-full md:w-2/5 aspect-[4/3] rounded-xl overflow-hidden border border-primary/5 bg-background-warm relative">
+                          <Cropper
+                            image={offerImageUrl}
+                            crop={{ x: imageSettings?.x || 0, y: imageSettings?.y || 0 }}
+                            zoom={imageSettings?.zoom || 1}
+                            aspect={4 / 3}
+                            onCropChange={(crop) => setImageSettings(s => ({ ...s, x: crop.x, y: crop.y }))}
+                            onZoomChange={(zoom) => setImageSettings(s => ({ ...s, zoom }))}
+                            showGrid={false}
+                          />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

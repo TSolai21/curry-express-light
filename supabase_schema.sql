@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS public.reviews (
     comment text NOT NULL,
     rating integer NOT NULL DEFAULT 5,
     image text,
+    image_settings jsonb,
     created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -44,6 +45,7 @@ CREATE TABLE IF NOT EXISTS public.offers (
     price_text text NOT NULL,
     tag text NOT NULL,
     image text NOT NULL,
+    image_settings jsonb,
     created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
