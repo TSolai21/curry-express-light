@@ -361,13 +361,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white border border-primary/10 p-8 max-w-sm w-full text-left relative z-10 shadow-xl"
         >
-          <button
-            onClick={onBackToHome}
-            className="absolute -top-12 left-0 flex items-center gap-1.5 text-[9px] uppercase font-bold tracking-widest text-primary/60 hover:text-primary transition-colors cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Website
-          </button>
+
 
           <div className="flex items-center gap-2 text-primary/40 mb-2">
             <Lock className="w-4 h-4" />
