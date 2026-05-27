@@ -192,14 +192,14 @@ export default function App() {
       <AnimatePresence>
         {showScrollTop && (
           <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
             onClick={scrollToTop}
-            className="fixed bottom-24 md:bottom-8 right-8 z-50 p-3 bg-primary text-white border border-primary/20 shadow-xl cursor-pointer hover:bg-primary/90 transition-all focus:outline-none flex items-center justify-center rounded-xl"
+            className="fixed bottom-24 md:bottom-8 right-6 md:right-8 z-50 w-10 h-10 rounded-full bg-primary border border-[#DAC49C] text-[#DAC49C] hover:bg-[#DAC49C] hover:text-primary flex items-center justify-center transition-all duration-300 shadow-xl cursor-pointer group focus:outline-none"
             aria-label="Scroll to top"
           >
-            <ArrowUp className="w-4 h-4" />
+            <ArrowUp className="w-5 h-5 stroke-[2] group-hover:-translate-y-0.5 transition-transform" />
           </motion.button>
         )}
       </AnimatePresence>
