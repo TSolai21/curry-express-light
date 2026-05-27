@@ -6,8 +6,23 @@ export default function AboutSection() {
   const [showFullStory, setShowFullStory] = useState(false);
 
   return (
-    <section id="about" className="py-24 px-6 md:px-12 xl:px-20 bg-background-warm border-y border-primary/10">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+    <section id="about" className="relative py-24 px-6 md:px-12 xl:px-20 bg-background-warm border-y border-primary/10 overflow-hidden">
+      {/* Decorative Floating Star Anise */}
+      <div className="absolute bottom-32 left-[5%] pointer-events-none -z-0 animate-float-slower opacity-15 hidden md:block">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-secondary">
+          <path d="M12 2L14 9L21 7L16 12L21 17L14 15L12 22L10 15L3 17L8 12L3 7L10 9L12 2Z" />
+        </svg>
+      </div>
+
+      {/* Additional Floating Herb */}
+      <div className="absolute top-20 right-[5%] pointer-events-none -z-0 animate-float-slow opacity-10 hidden lg:block">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-[#6E7260]">
+          <path d="M2 22C2 22 8 20 12 16C16 12 20 8 22 2C22 2 16 4 12 8C8 12 6 16 2 22Z" />
+          <path d="M12 8L2 22" />
+        </svg>
+      </div>
+
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 relative z-10">
         
         {/* Left Side: Chef Image placed in static art frames */}
         <div className="w-full lg:w-1/2">

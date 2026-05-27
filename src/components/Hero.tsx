@@ -40,7 +40,7 @@ export default function Hero({ onOpenMenu, onOrderNow }: HeroProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <section id="home" className="relative min-h-screen flex flex-col lg:flex-row items-center px-6 md:px-12 xl:px-20 pt-32 pb-16 max-w-7xl mx-auto overflow-hidden">
+    <section id="home" className="relative min-h-screen flex flex-col lg:flex-row items-center px-6 md:px-12 xl:px-20 pt-24 md:pt-32 pb-16 max-w-7xl mx-auto overflow-hidden">
       {/* Background Glowing Ambient Symphony */}
       <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-secondary/5 blur-[120px] pointer-events-none -z-10 animate-pulse-slow"></div>
       <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-[#DAC49C]/15 blur-[150px] pointer-events-none -z-10 animate-pulse-slow" style={{ animationDelay: '-5s' }}></div>

@@ -46,11 +46,11 @@ export default function Header({ currentPage, onNavigate, onOrderNow }: HeaderPr
       <header
         id="main-header"
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-            ? 'bg-background-warm/95 backdrop-blur-md py-4 border-b border-primary/10 shadow-xs'
-            : 'bg-transparent py-6 border-b border-primary/5'
-          }`}
+            ? 'bg-background-warm/95 backdrop-blur-md py-3 md:py-4 border-b border-primary/10 shadow-xs'
+            : 'bg-transparent py-4 md:py-6 border-b border-primary/5'
+          } pt-[var(--sat)]`}
       >
-        <nav className="flex justify-between items-center px-6 md:px-12 max-w-7xl mx-auto">
+        <nav className="flex justify-between items-center px-4 md:px-12 max-w-7xl mx-auto">
           {/* Logo with clean editorial details */}
           <div className="flex items-center gap-3">
             <a
@@ -61,8 +61,8 @@ export default function Header({ currentPage, onNavigate, onOrderNow }: HeaderPr
               }}
               className="select-none cursor-pointer flex items-center gap-3"
             >
-              <img src={logo} alt="Curry Express Logo" className="h-12 w-auto object-contain" />
-              <span className="font-serif text-2xl font-bold text-primary tracking-tight">Curry Express</span>
+              <img src={logo} alt="Curry Express Logo" className="h-10 md:h-12 w-auto object-contain" />
+              <span className="font-serif text-xl md:text-2xl font-bold text-primary tracking-tight">Curry Express</span>
             </a>
           </div>
 
@@ -94,10 +94,10 @@ export default function Header({ currentPage, onNavigate, onOrderNow }: HeaderPr
               Order Now
             </button>
 
-            {/* Mobile Hamburger menu */}
+            {/* Mobile hamburger menu hidden, replaced by bottom nav */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 lg:hidden text-primary hover:text-primary hover:bg-primary/5 rounded-xl cursor-pointer"
+              className="p-2 hidden text-primary hover:text-primary hover:bg-primary/5 rounded-xl cursor-pointer"
               aria-label="Toggle mobile menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -105,41 +105,6 @@ export default function Header({ currentPage, onNavigate, onOrderNow }: HeaderPr
           </div>
         </nav>
       </header>
-
-      {/* Mobile Menu Drawer Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed top-[64px] left-0 w-full bg-background-warm border-b border-primary/20 z-40 lg:hidden px-6 py-8"
-          >
-            <div className="flex flex-col gap-6">
-              {menuItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item)}
-                  className="font-sans text-xs uppercase font-bold text-primary hover:text-primary tracking-[0.2em] pb-2 border-b border-primary/5"
-                >
-                  {item.name}
-                </a>
-              ))}
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOrderNow();
-                }}
-                className="w-full bg-primary py-3 rounded-xl font-sans text-[10px] uppercase font-bold tracking-[0.2em] text-white text-center hover:bg-primary/90 transition-colors mt-2"
-              >
-                Order Now
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }

@@ -40,9 +40,6 @@ export default function Footer({ onNavigate }: FooterProps) {
             <a href="#contact" onClick={(e) => handleNavClick(e, 'home', '#contact')} className="hover:text-secondary transition-colors">
               Contact
             </a>
-            <a href="#admin" onClick={(e) => handleNavClick(e, 'admin')} className="hover:text-secondary transition-colors font-bold text-[#DAC49C]">
-              Admin Portal
-            </a>
           </div>
 
           {/* Socials */}

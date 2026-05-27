@@ -38,8 +38,20 @@ export default function MenuSection({ onSelectCategory, onOpenMenuWithCategory }
   ];
 
   return (
-    <section id="menu" className="bg-background-warm py-24 px-6 md:px-12 xl:px-20 border-y border-primary/10">
-      <div className="max-w-7xl mx-auto">
+    <section id="menu" className="relative bg-background-warm py-24 px-6 md:px-12 xl:px-20 border-y border-primary/10 overflow-hidden">
+      {/* Decorative Floating Spices/Herbs */}
+      <div className="absolute top-40 left-[4%] pointer-events-none -z-0 animate-float-slow opacity-15 hidden lg:block">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-secondary">
+          <path d="M12 2L14 9L21 7L16 12L21 17L14 15L12 22L10 15L3 17L8 12L3 7L10 9L12 2Z" />
+        </svg>
+      </div>
+      <div className="absolute bottom-32 right-[6%] pointer-events-none -z-0 animate-float-slower opacity-10 hidden md:block">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-primary">
+          <circle cx="12" cy="12" r="8" strokeDasharray="4 4" />
+        </svg>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Heading with high-end Editorial label detail */}
         <div className="flex flex-col items-center text-center mb-16">
           <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-primary/50 uppercase">

@@ -15,9 +15,17 @@ import MapSection from './components/MapSection';
 import Footer from './components/Footer';
 import MenuPage from './components/MenuPage';
 import AdminPage from './components/AdminPage';
+import MobileBottomNav from './components/MobileBottomNav';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'menu' | 'admin'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'menu' | 'admin'>(() => {
+    // Basic routing for /admin
+    if (window.location.pathname === '/admin') {
+      return 'admin';
+    }
+    return 'home';
+  });
+  const [currentSection, setCurrentSection] = useState<string | undefined>(undefined);
   const [menuInitialCategory, setMenuInitialCategory] = useState<string>('all');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -66,6 +74,15 @@ export default function App() {
 
   const handleNavigate = (page: 'home' | 'menu' | 'admin', sectionId?: string) => {
     setCurrentPage(page);
+    setCurrentSection(sectionId);
+    
+    // Update URL if needed
+    if (page === 'admin') {
+      window.history.pushState({}, '', '/admin');
+    } else if (window.location.pathname === '/admin') {
+      window.history.pushState({}, '', '/');
+    }
+
     if (page === 'home' && sectionId) {
       // Delay slightly to let page render
       setTimeout(() => {
@@ -129,8 +146,9 @@ export default function App() {
         onOrderNow={handleOrderRedirect}
       />
 
-      {currentPage === 'home' ? (
-        <main>
+      <div className="pb-20 md:pb-0">
+        {currentPage === 'home' ? (
+          <main>
           {/* 1. Hero Block */}
           <Hero
             onOpenMenu={() => handleOpenMenuCategory('all')}
@@ -176,10 +194,18 @@ export default function App() {
             onDeleteReview={handleDeleteReview}
             onBackToHome={() => handleNavigate('home')}
           />
-        </main>
-      )}
+          </main>
+        )}
+      </div>
 
       <Footer onNavigate={handleNavigate} />
+      
+      <MobileBottomNav 
+        currentPage={currentPage}
+        currentSection={currentSection}
+        onNavigate={handleNavigate}
+        onOrderNow={handleOrderRedirect}
+      />
 
       {/* Floating Scroll to Top button */}
       <AnimatePresence>
@@ -189,7 +215,7 @@ export default function App() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 z-50 p-3 bg-primary text-white border border-primary/20 shadow-xl cursor-pointer hover:bg-primary/90 transition-all focus:outline-none flex items-center justify-center rounded-xl"
+            className="fixed bottom-24 md:bottom-8 right-8 z-50 p-3 bg-primary text-white border border-primary/20 shadow-xl cursor-pointer hover:bg-primary/90 transition-all focus:outline-none flex items-center justify-center rounded-xl"
             aria-label="Scroll to top"
           >
             <ArrowUp className="w-4 h-4" />

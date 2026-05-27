@@ -10,8 +10,23 @@ interface SpecialOffersProps {
 
 export default function SpecialOffers({ onOrderCombo, onOpenMenu }: SpecialOffersProps) {
   return (
-    <section id="offers" className="py-24 px-6 md:px-12 xl:px-20 bg-white bg-dotted border-b border-primary/10">
-      <div className="max-w-7xl mx-auto">
+    <section id="offers" className="relative py-24 px-6 md:px-12 xl:px-20 bg-white bg-dotted border-b border-primary/10 overflow-hidden">
+      {/* Decorative Floating Herb */}
+      <div className="absolute top-32 right-[10%] pointer-events-none -z-0 animate-float-slow opacity-15 hidden md:block">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-[#6E7260]">
+          <path d="M2 22C2 22 8 20 12 16C16 12 20 8 22 2C22 2 16 4 12 8C8 12 6 16 2 22Z" />
+          <path d="M12 8L2 22" />
+        </svg>
+      </div>
+
+      {/* Decorative Floating Spices */}
+      <div className="absolute bottom-40 left-[8%] pointer-events-none -z-0 animate-float-fast opacity-10 hidden lg:block">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-secondary">
+          <circle cx="12" cy="12" r="8" strokeDasharray="4 4" />
+        </svg>
+      </div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Heading with Editorial Style */}
         <div className="flex flex-col items-center text-center mb-16">
           <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-primary/50 uppercase">

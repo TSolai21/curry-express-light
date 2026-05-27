@@ -81,15 +81,15 @@ export default function MenuPage({ onOrderNow, initialCategory = 'all' }: MenuPa
         </div>
 
         {/* Category Pills Container */}
-        <div className="relative">
-          <div className="flex flex-wrap gap-2.5 justify-center">
+        <div className="relative -mx-6 md:mx-0 px-6 md:px-0">
+          <div className="flex overflow-x-auto no-scrollbar touch-scroll gap-2.5 pb-2 md:pb-0 md:flex-wrap md:justify-center">
             {categories.map((cat) => {
               const isActive = selectedCategory === cat.key;
               return (
                 <button
                   key={cat.key}
                   onClick={() => setSelectedCategory(cat.key)}
-                  className={`px-5 py-3.5 text-[9px] font-bold uppercase tracking-[0.2em] font-sans whitespace-nowrap cursor-pointer transition-all duration-300 border ${
+                  className={`px-5 py-3.5 text-[9px] font-bold uppercase tracking-[0.2em] font-sans whitespace-nowrap cursor-pointer transition-all duration-300 border shrink-0 ${
                     isActive
                       ? 'bg-primary text-white border-primary shadow-xs'
                       : 'bg-white text-primary border-primary/15 hover:border-primary/30 hover:bg-primary/[0.02]'

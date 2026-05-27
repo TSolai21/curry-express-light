@@ -58,8 +58,15 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
   };
 
   return (
-    <section id="reviews" className="py-24 px-6 md:px-12 xl:px-20 bg-white border-b border-primary/10">
-      <div className="max-w-7xl mx-auto">
+    <section id="reviews" className="relative py-24 px-6 md:px-12 xl:px-20 bg-white border-b border-primary/10 overflow-hidden">
+      {/* Decorative Floating Circles representing spices/seeds */}
+      <div className="absolute top-1/2 right-[5%] pointer-events-none -z-0 animate-float-fast opacity-10 hidden lg:block">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-primary">
+          <circle cx="12" cy="12" r="8" strokeDasharray="4 4" />
+        </svg>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Block with overall score pill */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 text-center md:text-left gap-6 border-b border-primary/10 pb-8">
           <div>
