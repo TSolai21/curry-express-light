@@ -26,7 +26,8 @@ export interface Testimonial {
   rating: number;
   comment: string;
   author: string;
-  date: string;
+  date?: string;
+  created_at?: string;
   image?: string;
   image_settings?: { x: number; y: number; zoom: number };
 }

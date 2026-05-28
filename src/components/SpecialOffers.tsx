@@ -8,66 +8,59 @@ interface SpecialOffersProps {
   onOpenMenu: () => void;
 }
 
-export default function SpecialOffers({ offers, onOrderCombo, onOpenMenu }: SpecialOffersProps) {
-  if (!offers || offers.length === 0) return null; // Or show a fallback if desired
+export default function SpecialOffers({ offers, onOrderCombo }: SpecialOffersProps) {
+  if (!offers || offers.length === 0) return null;
 
   return (
-    <section id="offers" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-background-warm bg-dotted overflow-hidden">
-      {/* Decorative Floating Herb */}
-      <div className="absolute top-32 right-[10%] pointer-events-none -z-0 animate-float-slow opacity-15 hidden md:block">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-[#6E7260]">
-          <path d="M2 22C2 22 8 20 12 16C16 12 20 8 22 2C22 2 16 4 12 8C8 12 6 16 2 22Z" />
-          <path d="M12 8L2 22" />
-        </svg>
-      </div>
-
-      {/* Decorative Floating Spices */}
-      <div className="absolute bottom-40 left-[8%] pointer-events-none -z-0 animate-float-fast opacity-10 hidden lg:block">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-secondary">
-          <circle cx="12" cy="12" r="8" strokeDasharray="4 4" />
-        </svg>
-      </div>
+    <section id="offers" className="bg-surface py-24 md:py-32 relative border-t border-gold/10 overflow-hidden">
       
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section Heading with Editorial Style */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-primary/50 uppercase">
-            № 03 / EXCLUSIVE SETS
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        
+        {/* Section Heading */}
+        <div className="text-center mb-16">
+          <span className="font-sans text-gold text-sm uppercase tracking-[0.3em] font-medium block mb-4">
+            Exclusive Selections
           </span>
-          <h2 className="font-serif text-3xl md:text-5xl font-bold mt-3 text-primary tracking-tight">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-text-cream tracking-tight">
             Special Offers
           </h2>
-          <div className="h-[1.5px] w-12 bg-primary mt-4"></div>
         </div>
 
         {/* Offers Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {offers.map((offer) => (
-            <div key={offer.id} className="bg-stone-50 rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 border border-primary/10 hover:border-primary/20 transition-all duration-300">
-              <div className="w-full md:w-3/5 space-y-4 text-left">
+        <div className="flex flex-col gap-16 lg:gap-24">
+          {offers.map((offer, i) => (
+            <motion.div 
+              key={offer.id} 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.6 }}
+              className={`flex flex-col ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-8 lg:gap-16 group`}
+            >
+              <div className="w-full lg:w-1/2 space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start">
                 {offer.tag && (
-                  <div className="inline-block bg-stone-50 border border-primary/20 text-primary px-3 py-1 rounded-xl font-sans text-[8px] font-bold uppercase tracking-[0.2em]">
+                  <div className="inline-block bg-transparent border border-gold/30 text-gold px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em]">
                     {offer.tag}
                   </div>
                 )}
-                <h3 className="font-serif text-xl sm:text-2xl text-primary font-bold">
+                <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-text-cream tracking-tight">
                   {offer.title}
                 </h3>
-                <p className="font-sans text-xs sm:text-sm text-primary/70 leading-relaxed">
+                <p className="font-sans text-base lg:text-lg text-text-muted leading-relaxed max-w-lg">
                   {offer.description}
                 </p>
-                <span className="block font-serif text-lg text-primary italic font-medium">
+                <span className="block font-sans text-2xl lg:text-3xl text-gold tracking-wide mt-2">
                   {offer.price_text}
                 </span>
                 <button
                   onClick={onOrderCombo}
-                  className="border border-primary/25 text-primary px-5 py-2.5 rounded-xl font-sans text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-primary/5 transition-colors cursor-pointer mt-2"
+                  className="mt-8 bg-transparent border border-gold text-gold px-8 py-3 font-sans text-xs uppercase tracking-[0.2em] hover:bg-gold hover:text-bg transition-colors cursor-pointer block"
                 >
-                  Order on DoorDash
+                  Order Now
                 </button>
               </div>
               
-              <div className="w-full md:w-2/5 aspect-[4/3] bg-stone-50 rounded-xl flex items-center justify-center border border-primary/10 overflow-hidden relative">
+              <div className="w-full lg:w-1/2 aspect-video lg:aspect-[4/3] rounded-sm flex items-center justify-center overflow-hidden relative border border-gold/10 shadow-2xl">
                 <Cropper
                   image={offer.image}
                   crop={offer.image_settings ? { x: offer.image_settings.x, y: offer.image_settings.y } : { x: 0, y: 0 }}
@@ -77,24 +70,14 @@ export default function SpecialOffers({ offers, onOrderCombo, onOpenMenu }: Spec
                   onCropChange={() => {}}
                   onZoomChange={() => {}}
                   showGrid={false}
-                  classes={{ containerClassName: 'pointer-events-none' }}
+                  classes={{ containerClassName: 'pointer-events-none group-hover:scale-105 transition-transform duration-700' }}
                   style={{ cropAreaStyle: { border: 0, boxShadow: 'none' } }}
                 />
+                <div className="absolute inset-0 bg-bg/10 group-hover:bg-transparent transition-colors duration-700 pointer-events-none"></div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
-
-      {/* Wave Shape Divider */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
-        <svg 
-          viewBox="0 0 1200 120" 
-          preserveAspectRatio="none" 
-          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px] fill-stone-50"
-        >
-          <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
-        </svg>
       </div>
     </section>
   );

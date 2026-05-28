@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import logo from '../assets/logo.png';
+import ThemeSwitcher from './ThemeSwitcher';
 
 interface HeaderProps {
   currentPage: 'home' | 'menu' | 'admin';
@@ -15,11 +16,7 @@ export default function Header({ currentPage, onNavigate, onOrderNow }: HeaderPr
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -27,12 +24,10 @@ export default function Header({ currentPage, onNavigate, onOrderNow }: HeaderPr
 
   const menuItems = [
     { name: 'Home', href: '#home', page: 'home' as const },
-    { name: 'Menu', href: '#menu', page: 'menu' as const },
+    { name: 'Menu', href: '#menu', page: 'home' as const },
     { name: 'Offers', href: '#offers', page: 'home' as const },
     { name: 'About', href: '#about', page: 'home' as const },
-    { name: 'Gallery', href: '#gallery', page: 'home' as const },
     { name: 'Reviews', href: '#reviews', page: 'home' as const },
-    { name: 'Contact', href: '#contact', page: 'home' as const },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: typeof menuItems[0]) => {
@@ -44,67 +39,106 @@ export default function Header({ currentPage, onNavigate, onOrderNow }: HeaderPr
   return (
     <>
       <header
-        id="main-header"
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-            ? 'bg-background-warm/95 backdrop-blur-md py-3 md:py-4 border-b border-primary/10 shadow-xs'
-            : 'bg-transparent py-4 md:py-6 border-b border-primary/5'
-          } pt-[var(--sat)]`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-bg/95 backdrop-blur-md py-4 border-b border-gold/20 shadow-lg'
+            : 'bg-transparent py-6'
+        }`}
       >
-        <nav className="flex justify-between items-center px-4 md:px-12 max-w-7xl mx-auto">
-          {/* Logo with clean editorial details */}
-          <div className="flex items-center gap-3">
+        <nav className="flex justify-between items-center px-6 md:px-12 max-w-7xl mx-auto">
+          {/* Logo */}
+          <div className="flex items-center gap-3 z-50">
             <a
               href="#home"
               onClick={(e) => {
                 e.preventDefault();
+                setMobileMenuOpen(false);
                 onNavigate('home');
               }}
-              className="select-none cursor-pointer flex items-center gap-3"
+              className="select-none cursor-pointer flex items-center gap-3 group"
             >
-              <img src={logo} alt="Curry Express Logo" className="h-10 md:h-12 w-auto object-contain" />
-              <span className="font-serif text-xl md:text-2xl font-bold text-primary tracking-tight">Curry Express</span>
+              <img src={logo} alt="Curry Express Logo" className="h-10 w-auto object-contain transition-transform group-hover:scale-105" />
+              <span className={`font-sans text-lg md:text-xl tracking-widest uppercase transition-colors ${!isScrolled ? 'text-[#F5E6C8]' : 'text-text-cream'}`}>Curry Express</span>
             </a>
           </div>
 
-          {/* Desktop Nav Links - Beautiful Spacing & Tracking */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex items-center gap-8 xl:gap-10">
             {menuItems.map((item) => {
-              const isActive = (item.name === 'Menu' && currentPage === 'menu') || (item.name === 'Home' && currentPage === 'home');
               return (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item)}
-                  className={`font-sans text-[10px] uppercase font-bold tracking-[0.2em] transition-colors duration-200 ${isActive ? 'text-primary border-b border-primary/40 pb-0.5' : 'text-primary/60 hover:text-primary'
-                    }`}
+                  className={`font-sans text-xs uppercase tracking-[0.2em] transition-colors duration-300 ${!isScrolled ? 'text-[#B8B8B8] hover:text-[#F5E6C8]' : 'text-text-muted hover:text-gold'}`}
                 >
                   {item.name}
                 </a>
               );
             })}
-          </div>
-
-          {/* Right Header Buttons */}
-          <div className="flex items-center gap-4">
-            {/* Menu Drawer Link (Direct Trigger to DoorDash) */}
-            <button
+            <ThemeSwitcher />
+            <button 
               onClick={onOrderNow}
-              className="hidden sm:block bg-primary px-5 py-2.5 rounded-xl font-sans text-[10px] uppercase font-bold tracking-[0.18em] text-white hover:bg-primary/90 transition-all duration-200 cursor-pointer"
+              className="hidden md:block bg-transparent border border-gold text-gold px-5 py-2 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-gold hover:text-bg transition-colors duration-300 cursor-pointer"
             >
               Order Now
             </button>
+          </div>
 
-            {/* Mobile hamburger menu hidden, replaced by bottom nav */}
+          {/* Mobile Menu Toggle */}
+          <div className="flex lg:hidden items-center gap-4">
+            <ThemeSwitcher />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 hidden text-primary hover:text-primary hover:bg-primary/5 rounded-xl cursor-pointer"
+              className={`p-2 transition-colors z-50 cursor-pointer ${!isScrolled ? 'text-[#F5E6C8]' : 'text-text-cream hover:text-gold'}`}
               aria-label="Toggle mobile menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
             </button>
           </div>
         </nav>
       </header>
+
+      {/* Full-page Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-bg flex flex-col items-center justify-center"
+          >
+            <div className="flex flex-col items-center gap-8 w-full px-6">
+              {menuItems.map((item, i) => (
+                <motion.a
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item)}
+                  className="font-serif text-3xl text-text-cream hover:text-gold transition-colors"
+                >
+                  {item.name}
+                </motion.a>
+              ))}
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: menuItems.length * 0.1 }}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOrderNow();
+                }}
+                className="mt-8 bg-gold text-bg w-full max-w-xs py-4 rounded font-sans text-sm uppercase tracking-widest hover:bg-text-cream transition-colors cursor-pointer"
+              >
+                Order Now
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

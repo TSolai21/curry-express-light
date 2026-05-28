@@ -1,227 +1,256 @@
-import React, { useState } from 'react';
-import { Star, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Star, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
 import Cropper from 'react-easy-crop';
 import { Testimonial } from '../types';
-import logo from '../assets/logo.png';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 interface TestimonialsSectionProps {
   testimonials: Testimonial[];
 }
 
 export default function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
-  const [selectedReview, setSelectedReview] = useState<Testimonial | null>(null);
+  const [activeReviewIdx, setActiveReviewIdx] = useState<number | null>(null);
 
-  const isMarquee = testimonials.length > 3;
-  const displayTestimonials = isMarquee 
-    ? [...testimonials, ...testimonials, ...testimonials, ...testimonials] 
-    : testimonials;
+  // Handle keyboard navigation for modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (activeReviewIdx === null) return;
+      if (e.key === 'ArrowRight') handleNext(e as any);
+      if (e.key === 'ArrowLeft') handlePrev(e as any);
+      if (e.key === 'Escape') setActiveReviewIdx(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeReviewIdx, testimonials.length]);
 
-  const renderStars = (ratingNum: number, size = 16, fillClass = "text-amber-500 fill-amber-500") => {
-    const starsArray = [];
-    const fullStars = Math.floor(ratingNum);
-    const hasHalf = ratingNum % 1 !== 0;
-
-    for (let i = 1; i <= 5; i++) {
-      if (i <= fullStars) {
-        starsArray.push(
-          <Star
-            key={i}
-            className={fillClass}
-            style={{ width: `${size}px`, height: `${size}px` }}
-          />
-        );
-      } else if (i === fullStars + 1 && hasHalf) {
-        starsArray.push(
-          <div key={i} className="relative inline-block" style={{ width: `${size}px`, height: `${size}px` }}>
-            <Star className="text-outline-variant" style={{ width: `${size}px`, height: `${size}px` }} />
-            <div className="absolute top-0 left-0 overflow-hidden" style={{ width: '50%' }}>
-              <Star className={fillClass} style={{ width: `${size}px`, height: `${size}px` }} />
-            </div>
-          </div>
-        );
-      } else {
-        starsArray.push(
-          <Star
-            key={i}
-            className="text-outline-variant"
-            style={{ width: `${size}px`, height: `${size}px` }}
-          />
-        );
-      }
-    }
-    return <div className="flex gap-1">{starsArray}</div>;
-  };
-
-  // Helper to get consistent background colors for user initial avatars (Google Style)
-  const getAvatarBg = (name: string) => {
-    const code = name.charCodeAt(0) % 4;
-    switch (code) {
-      case 0: return 'bg-[#4285F4]'; // Google Blue
-      case 1: return 'bg-[#EA4335]'; // Google Red
-      case 2: return 'bg-[#FBBC05]'; // Google Yellow
-      default: return 'bg-[#34A853]'; // Google Green
+  const handleNext = (e: React.MouseEvent | KeyboardEvent) => {
+    if (e && 'stopPropagation' in e) e.stopPropagation();
+    if (activeReviewIdx !== null) {
+      setActiveReviewIdx((activeReviewIdx + 1) % testimonials.length);
     }
   };
+
+  const handlePrev = (e: React.MouseEvent | KeyboardEvent) => {
+    if (e && 'stopPropagation' in e) e.stopPropagation();
+    if (activeReviewIdx !== null) {
+      setActiveReviewIdx((activeReviewIdx - 1 + testimonials.length) % testimonials.length);
+    }
+  };
+
+  const timeAgo = (dateString?: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // fallback if it's already a string like "2 days ago" or invalid
+    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    
+    if (seconds < 60) return `${Math.max(1, seconds)}min ago`; // show 1min minimum to avoid negative or 0sec
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}min ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}hr ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days} day${days > 1 ? 's' : ''} ago`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months} mo ago`;
+    return `${Math.floor(months / 12)} yr ago`;
+  };
+
+  const renderStars = (ratingNum: number) => {
+    return (
+      <div className="flex justify-center md:justify-start gap-1">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            className={`w-4 h-4 ${i < ratingNum ? 'text-gold fill-[#C89B3C]' : 'text-gold/20'}`}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  if (!testimonials || testimonials.length === 0) return null;
 
   return (
-    <section id="reviews" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-stone-50 overflow-hidden">
-      {/* Decorative Floating Circles representing spices/seeds */}
-      <div className="absolute top-1/2 right-[5%] pointer-events-none -z-0 animate-float-fast opacity-10 hidden lg:block">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-primary">
-          <circle cx="12" cy="12" r="8" strokeDasharray="4 4" />
-        </svg>
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header Block with overall score pill */}
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 text-center md:text-left gap-6 border-b border-primary/10 pb-8">
-          <div>
-            <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-primary/50 uppercase">
-              № 06 / GENERAL APPRAISALS
-            </span>
-            <h2 className="font-serif text-3xl md:text-5xl font-bold mt-2 text-primary tracking-tight">
-              Guest Experiences
-            </h2>
-          </div>
+    <section id="reviews" className="bg-bg py-24 md:py-32 relative border-t border-gold/10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        
+        <div className="text-center mb-16">
+          <span className="font-sans text-gold text-sm uppercase tracking-[0.3em] font-medium block mb-4">
+            Guest Experiences
+          </span>
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-text-cream tracking-tight">
+            Voices of Tradition
+          </h2>
         </div>
 
-        {/* Dynamic Reviews Deck list */}
-        <div className={`relative py-4 group ${isMarquee ? 'overflow-hidden pause-marquee -mx-6 md:-mx-12 xl:-mx-20 px-6 md:px-12 xl:px-20' : 'overflow-x-auto pb-8'}`}>
-          <div className={`flex gap-8 items-stretch ${isMarquee ? 'w-max animate-marquee' : 'w-max md:w-full md:justify-center'}`}>
-            {displayTestimonials.map((testi, i) => (
-              <motion.div
-                key={`${testi.id}-${i}`}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
-                onClick={() => setSelectedReview(testi)}
-                className="w-[300px] md:w-[380px] p-8 bg-background-warm rounded-xl space-y-5 border border-primary/10 flex flex-col justify-between text-left hover:border-primary/25 cursor-pointer hover:shadow-xs transition-all duration-300 flex-shrink-0"
-                id={`review-card-${testi.id}-${i}`}
-              >
-                <div className="space-y-4">
-                  <div className="h-44 w-full overflow-hidden border border-primary/5 bg-stone-50 mb-4 rounded-xl flex items-center justify-center relative">
-                    {testi.image ? (
-                      <Cropper
-                        image={testi.image}
-                        crop={testi.image_settings ? { x: testi.image_settings.x, y: testi.image_settings.y } : { x: 0, y: 0 }}
-                        zoom={testi.image_settings?.zoom || 1}
-                        aspect={1}
-                        objectFit="cover"
-                        onCropChange={() => {}}
-                        onZoomChange={() => {}}
-                        showGrid={false}
-                        classes={{ containerClassName: 'pointer-events-none' }}
-                        style={{ cropAreaStyle: { border: 0, boxShadow: 'none' } }}
-                      />
-                    ) : (
-                      <img
-                        src={logo}
-                        alt={`${testi.author}'s review representation`}
-                        className="w-full h-full object-contain opacity-30 p-8"
-                      />
-                    )}
+        <div className="px-4">
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            spaceBetween={32}
+            slidesPerView={1}
+            breakpoints={{
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+            loop={testimonials.length >= 3}
+            autoplay={{ delay: 5000, disableOnInteraction: true }}
+            pagination={{ clickable: true, dynamicBullets: true }}
+            className="pb-16"
+          >
+            {testimonials.map((testi, i) => (
+              <SwiperSlide key={`${testi.id}-${i}`} className="h-auto">
+                <motion.div
+                  whileHover={{ y: -5 }}
+                  onClick={() => setActiveReviewIdx(i)}
+                  className="h-full bg-surface rounded-sm border border-gold/10 hover:border-gold/30 flex flex-col justify-between cursor-pointer transition-all duration-300 shadow-xl text-center md:text-left group p-8"
+                >
+                  <div className="space-y-4 flex flex-col items-center md:items-start w-full">
+                    <div className="flex items-center gap-4 w-full">
+                      {testi.image && (
+                        <div className="w-12 h-12 rounded-full relative border border-gold/20 overflow-hidden bg-bg shrink-0">
+                          <Cropper
+                            image={testi.image}
+                            crop={testi.image_settings ? { x: testi.image_settings.x, y: testi.image_settings.y } : { x: 0, y: 0 }}
+                            zoom={testi.image_settings?.zoom || 1}
+                            aspect={1}
+                            objectFit="cover"
+                            onCropChange={() => {}}
+                            onZoomChange={() => {}}
+                            showGrid={false}
+                            classes={{ containerClassName: 'pointer-events-none' }}
+                            style={{ cropAreaStyle: { border: 0, boxShadow: 'none' } }}
+                          />
+                        </div>
+                      )}
+                      <div className="flex flex-col text-left">
+                        <p className="font-sans text-sm font-bold text-text-cream uppercase tracking-wider">
+                          {testi.author}
+                        </p>
+                        {(testi.created_at || testi.date) && (
+                          <p className="font-sans text-xs text-text-muted mt-0.5">
+                            {timeAgo(testi.created_at || testi.date)}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-col items-start w-full mt-2">
+                      {renderStars(testi.rating)}
+                    </div>
+                    
+                    <p className="font-serif text-lg md:text-xl text-text-cream/90 italic leading-relaxed line-clamp-4 mt-4 w-full text-left">
+                      "{testi.comment}"
+                    </p>
                   </div>
-                  <div>{renderStars(testi.rating, 12)}</div>
-                  <p className="font-serif text-sm sm:text-base text-primary/80 italic leading-relaxed">
-                    "{testi.comment}"
-                  </p>
-                </div>
-                <div className="font-sans text-[10px] font-bold tracking-widest text-primary/60 pt-4 border-t border-primary/10 uppercase">
-                  — {testi.author}
-                </div>
-              </motion.div>
+                </motion.div>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
         </div>
       </div>
 
-      {/* Google Review Styled Modal */}
       <AnimatePresence>
-        {selectedReview && (
-          <div className="fixed inset-0 bg-primary/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-stone-50 rounded-lg shadow-2xl max-w-xl w-full p-6 md:p-8 relative text-left border border-primary/5 font-sans"
+        {activeReviewIdx !== null && (
+          <div 
+            onClick={() => setActiveReviewIdx(null)}
+            className="fixed inset-0 bg-bg/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4"
+          >
+            <button
+              onClick={() => setActiveReviewIdx(null)}
+              className="absolute top-6 right-6 p-2 text-text-muted hover:text-gold transition-colors cursor-pointer z-50"
+              aria-label="Close"
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedReview(null)}
-                className="absolute top-4 right-4 p-1.5 text-primary/40 hover:text-primary rounded-full hover:bg-primary/5 transition-all cursor-pointer"
-                aria-label="Close"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <X className="w-8 h-8" />
+            </button>
 
+            <div className="relative max-w-4xl w-full flex flex-col items-center gap-6" onClick={(e) => e.stopPropagation()}>
+              <div className="relative flex items-center justify-center w-full">
+                
+                <button
+                  onClick={handlePrev}
+                  className="absolute left-0 md:-left-16 p-3 text-text-muted hover:text-gold transition-colors z-50 cursor-pointer hidden sm:block"
+                  aria-label="Previous review"
+                >
+                  <ChevronLeft className="w-8 h-8" />
+                </button>
 
+                <motion.div
+                  key={activeReviewIdx}
+                  initial={{ scale: 0.95, opacity: 0, x: 20 }}
+                  animate={{ scale: 1, opacity: 1, x: 0 }}
+                  exit={{ scale: 0.95, opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-surface rounded-sm shadow-2xl w-full p-8 md:p-16 relative text-center md:text-left border border-gold/20 flex flex-col items-center md:items-start max-w-2xl mx-auto"
+                >
+                  <div className="flex flex-col items-center md:items-start w-full">
+                    <div className="flex items-center gap-5 mb-6 w-full">
+                      {testimonials[activeReviewIdx].image && (
+                        <div className="w-16 h-16 rounded-full relative border border-gold/20 overflow-hidden bg-bg shrink-0 shadow-lg">
+                          <Cropper
+                            image={testimonials[activeReviewIdx].image!}
+                            crop={testimonials[activeReviewIdx].image_settings ? { x: testimonials[activeReviewIdx].image_settings!.x, y: testimonials[activeReviewIdx].image_settings!.y } : { x: 0, y: 0 }}
+                            zoom={testimonials[activeReviewIdx].image_settings?.zoom || 1}
+                            aspect={1}
+                            objectFit="cover"
+                            onCropChange={() => {}}
+                            onZoomChange={() => {}}
+                            showGrid={false}
+                            classes={{ containerClassName: 'pointer-events-none' }}
+                            style={{ cropAreaStyle: { border: 0, boxShadow: 'none' } }}
+                          />
+                        </div>
+                      )}
+                      <div className="flex flex-col text-left">
+                        <p className="font-sans text-lg font-bold text-text-cream uppercase tracking-wider">
+                          {testimonials[activeReviewIdx].author}
+                        </p>
+                        {(testimonials[activeReviewIdx].created_at || testimonials[activeReviewIdx].date) && (
+                          <p className="font-sans text-sm text-text-muted mt-1">
+                            {timeAgo(testimonials[activeReviewIdx].created_at || testimonials[activeReviewIdx].date)}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="mb-6 w-full flex justify-start">
+                      {renderStars(testimonials[activeReviewIdx].rating)}
+                    </div>
+                    
+                    <p className="font-serif text-xl md:text-3xl text-text-cream leading-relaxed italic mb-4 text-left w-full">
+                      "{testimonials[activeReviewIdx].comment}"
+                    </p>
 
-              {/* User Profile Info (Google Style) */}
-              <div className="flex items-center gap-3.5 mb-4">
-                <div className={`w-11 h-11 rounded-full text-white flex items-center justify-center font-bold text-lg select-none shadow-xs ${getAvatarBg(selectedReview.author)}`}>
-                  {selectedReview.author.charAt(0)}
-                </div>
-                <div className="flex flex-col text-left">
-                  <div className="flex items-center gap-2">
-                    <span className="font-sans font-bold text-sm text-primary leading-tight">
-                      {selectedReview.author}
-                    </span>
+                    {/* Mobile Navigation controls inside card for smaller screens */}
+                    <div className="flex sm:hidden justify-center gap-6 mt-8 pt-6 border-t border-gold/10 w-full">
+                      <button onClick={handlePrev} className="text-text-muted hover:text-gold p-2">
+                        <ChevronLeft className="w-6 h-6" />
+                      </button>
+                      <button onClick={handleNext} className="text-text-muted hover:text-gold p-2">
+                        <ChevronRight className="w-6 h-6" />
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
+
+                <button
+                  onClick={handleNext}
+                  className="absolute right-0 md:-right-16 p-3 text-text-muted hover:text-gold transition-colors z-50 cursor-pointer hidden sm:block"
+                  aria-label="Next review"
+                >
+                  <ChevronRight className="w-8 h-8" />
+                </button>
+
               </div>
-
-              {/* Star Rating & Relative Time */}
-              <div className="flex items-center gap-3 mb-4">
-                {renderStars(selectedReview.rating, 16)}
-                <span className="text-[10px] text-primary/40 font-sans tracking-wide">
-                  {selectedReview.date || "Just now"}
-                </span>
-              </div>
-
-              {/* Comment Content */}
-              <p className="font-sans text-xs sm:text-sm text-primary/85 leading-relaxed text-left mb-6 select-text whitespace-pre-line">
-                {selectedReview.comment.replace(/"/g, '')}
-              </p>
-
-              {/* Attached Review Photo */}
-              {selectedReview.image && (
-                <div className="mt-4 border-t border-primary/5 pt-4">
-                  <span className="font-sans text-[10px] font-extrabold uppercase tracking-wider text-primary/40 block mb-2">
-                    Photos Attached by Reviewer
-                  </span>
-                  <div className="max-h-60 w-full aspect-square overflow-hidden rounded-md border border-primary/5 bg-background-warm relative">
-                    <Cropper
-                      image={selectedReview.image}
-                      crop={selectedReview.image_settings ? { x: selectedReview.image_settings.x, y: selectedReview.image_settings.y } : { x: 0, y: 0 }}
-                      zoom={selectedReview.image_settings?.zoom || 1}
-                      aspect={1}
-                      objectFit="cover"
-                      onCropChange={() => {}}
-                      onZoomChange={() => {}}
-                      showGrid={false}
-                      classes={{ containerClassName: 'pointer-events-none' }}
-                      style={{ cropAreaStyle: { border: 0, boxShadow: 'none' } }}
-                    />
-                  </div>
-                </div>
-              )}
-            </motion.div>
+            </div>
           </div>
         )}
       </AnimatePresence>
-
-      {/* Wave Shape Divider */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
-        <svg 
-          viewBox="0 0 1200 120" 
-          preserveAspectRatio="none" 
-          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
-          fill="#F5F2ED"
-        >
-          <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
-        </svg>
-      </div>
     </section>
   );
 }

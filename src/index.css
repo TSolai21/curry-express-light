@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @layer base {
   html, body {
-    /* Prevent bounce on scroll for app-like feel */
+  /* Prevent bounce on scroll for app-like feel */
     overscroll-behavior: none;
     -webkit-text-size-adjust: 100%;
     /* Disable text selection everywhere, but allow it in inputs */
     -webkit-user-select: none;
     user-select: none;
+    background-color: var(--theme-bg);
+    color: var(--theme-text-cream);
   }
   
   input, textarea {
@@ -22,27 +24,32 @@
     --sar: env(safe-area-inset-right);
     --sab: env(safe-area-inset-bottom);
     --sal: env(safe-area-inset-left);
+    
+    --theme-bg: #0F0F0F;
+    --theme-surface: #181818;
+    --theme-gold: #C89B3C;
+    --theme-text-cream: #F5E6C8;
+    --theme-text-muted: #B8B8B8;
+  }
+  
+  :root[data-theme="light"] {
+    --theme-bg: #FAFAFA;       /* Clean off-white background */
+    --theme-surface: #FFFFFF;    /* Pure white for cards/surfaces */
+    --theme-gold: #C89B3C;       /* Keep the signature gold */
+    --theme-text-cream: #1A1A1A; /* Very dark gray for headings (replacing cream) */
+    --theme-text-muted: #666666; /* Medium gray for body text */
   }
 }
 
 @theme {
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "Outfit", system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-sans);
 
-  --color-primary: #2B1E1A;
-  --color-secondary: #903010;
-  --color-accent: #6E7260;
-  --color-background-warm: #F5F2ED;
-  --color-surface-card: #FFFFFF;
-  --color-surface-dim: #E8E4DF;
-  --color-surface-container-low: #FAF7F4;
-  --color-surface-container: #F5F2ED;
-  --color-surface-container-high: #E8E4DF;
-  --color-surface-container-highest: #DCD7D0;
-  --color-on-surface: #2B1E1A;
-  --color-on-surface-variant: #4A4A48;
-  --color-outline: #2B1E1A;
-  --color-outline-variant: rgba(43, 30, 26, 0.15);
+  --color-bg: var(--theme-bg);
+  --color-surface: var(--theme-surface);
+  --color-gold: var(--theme-gold);
+  --color-text-cream: var(--theme-text-cream);
+  --color-text-muted: var(--theme-text-muted);
 }
 
 @layer utilities {

@@ -6,20 +6,18 @@ import { motion, AnimatePresence } from 'motion/react';
 
 import Header from './components/Header';
 import Hero from './components/Hero';
-import MenuSection from './components/MenuSection';
-import SpecialOffers from './components/SpecialOffers';
+import SignatureDishes from './components/SignatureDishes';
 import AboutSection from './components/AboutSection';
-import GallerySection from './components/GallerySection';
+import SpecialOffers from './components/SpecialOffers';
+import WhyChooseSection from './components/WhyChooseSection';
 import TestimonialsSection from './components/TestimonialsSection';
-import MapSection from './components/MapSection';
+import CTASection from './components/CTASection';
 import Footer from './components/Footer';
 import MenuPage from './components/MenuPage';
 import AdminPage from './components/AdminPage';
-import MobileBottomNav from './components/MobileBottomNav';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'menu' | 'admin'>(() => {
-    // Basic routing for /admin
     if (window.location.pathname === '/admin') {
       return 'admin';
     }
@@ -29,7 +27,6 @@ export default function App() {
   const [menuInitialCategory, setMenuInitialCategory] = useState<string>('all');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Dynamic content
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [offers, setOffers] = useState<SpecialOffer[]>([]);
 
@@ -42,7 +39,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    // Fetch initial data from Supabase
     async function loadData() {
       const [reviewsRes, offersRes] = await Promise.all([
         supabase.from('reviews').select('*').order('created_at', { ascending: false }),
@@ -58,16 +54,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
-      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   const handleOrderRedirect = () => {
     const doordashUrl = (import.meta as any).env.VITE_DOORDASH_URL || 'https://www.doordash.com';
     window.open(doordashUrl, '_blank', 'noopener,noreferrer');
@@ -77,7 +63,6 @@ export default function App() {
     setCurrentPage(page);
     setCurrentSection(sectionId);
     
-    // Update URL if needed
     if (page === 'admin') {
       window.history.pushState({}, '', '/admin');
     } else if (window.location.pathname === '/admin') {
@@ -85,7 +70,6 @@ export default function App() {
     }
 
     if (page === 'home' && sectionId) {
-      // Delay slightly to let page render
       setTimeout(() => {
         const el = document.querySelector(sectionId);
         if (el) {
@@ -111,84 +95,62 @@ export default function App() {
   };
 
   return (
-    <div className="bg-background-warm bg-dotted min-h-screen text-on-background selection:bg-[#DAC49C] selection:text-primary max-w-screen overflow-x-hidden antialiased scroll-smooth">
-      {/* Cursor Glow Effect */}
-      <div 
-        className="pointer-events-none fixed inset-0 z-50 transition-opacity duration-300"
-        style={{
-          background: 'radial-gradient(600px circle at var(--mouse-x, 50vw) var(--mouse-y, 50vh), rgba(218, 196, 156, 0.12), transparent 40%)'
-        }}
-      />
+    <div className="bg-bg min-h-screen text-text-muted selection:bg-gold selection:text-bg max-w-screen overflow-x-hidden antialiased scroll-smooth font-sans">
       
-      {/* Header bar */}
       <Header
         currentPage={currentPage}
         onNavigate={handleNavigate}
         onOrderNow={handleOrderRedirect}
       />
 
-      <div className="pb-20 md:pb-0">
+      <div className="pb-0">
         {currentPage === 'home' ? (
           <main>
-          {/* 1. Hero Block */}
-          <Hero
-            onOpenMenu={() => handleOpenMenuCategory('all')}
-            onOrderNow={handleOrderRedirect}
-          />
+            <Hero
+              onOpenMenu={() => handleOpenMenuCategory('all')}
+              onOrderNow={handleOrderRedirect}
+            />
 
-          {/* 2. Signature Sections List */}
-          <MenuSection
-            onSelectCategory={(cat) => handleOpenMenuCategory(cat)}
-            onOpenMenuWithCategory={(cat) => handleOpenMenuCategory(cat)}
-          />
+            <SignatureDishes
+              onOpenMenu={() => handleOpenMenuCategory('all')}
+            />
 
-          {/* 3. Limited Time Offers */}
-          <SpecialOffers
-            offers={offers}
-            onOrderCombo={handleOrderRedirect}
-            onOpenMenu={() => handleOpenMenuCategory('all')}
-          />
+            {offers.length > 0 && (
+              <SpecialOffers 
+                offers={offers}
+                onOrderCombo={handleOrderRedirect}
+                onOpenMenu={() => handleOpenMenuCategory('all')}
+              />
+            )}
 
-          {/* 4. Heritage Story Segment */}
-          <AboutSection />
+            <AboutSection />
 
-          {/* 5. Food Photo Lightbox Gallery */}
-          <GallerySection />
+            <WhyChooseSection />
 
-          {/* 6. Guest Testimonial Wall */}
-          {testimonials.length > 0 && (
-            <TestimonialsSection testimonials={testimonials} />
-          )}
+            {testimonials.length > 0 && (
+              <TestimonialsSection testimonials={testimonials} />
+            )}
 
-          {/* 7. Culinary Kitchen visits & Directions */}
-          <MapSection onOrderNow={handleOrderRedirect} />
-        </main>
-      ) : currentPage === 'menu' ? (
-        <main>
-          <MenuPage
-            onOrderNow={handleOrderRedirect}
-            initialCategory={menuInitialCategory}
-          />
-        </main>
-      ) : (
-        <main>
-          <AdminPage
-            onBackToHome={() => handleNavigate('home')}
-          />
+            <CTASection onOrderNow={handleOrderRedirect} />
+          </main>
+        ) : currentPage === 'menu' ? (
+          <main>
+            <MenuPage
+              onOrderNow={handleOrderRedirect}
+              initialCategory={menuInitialCategory}
+            />
+          </main>
+        ) : (
+          <main>
+            <AdminPage
+              onBackToHome={() => handleNavigate('home')}
+            />
           </main>
         )}
       </div>
 
       <Footer onNavigate={handleNavigate} />
       
-      <MobileBottomNav 
-        currentPage={currentPage}
-        currentSection={currentSection}
-        onNavigate={handleNavigate}
-        onOrderNow={handleOrderRedirect}
-      />
-
-      {/* Floating Scroll to Top button */}
       <AnimatePresence>
         {showScrollTop && (
           <motion.button
@@ -196,10 +158,10 @@ export default function App() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             onClick={scrollToTop}
-            className="fixed bottom-24 md:bottom-8 right-6 md:right-8 z-50 w-10 h-10 rounded-full bg-primary border border-[#DAC49C] text-[#DAC49C] hover:bg-[#DAC49C] hover:text-primary flex items-center justify-center transition-all duration-300 shadow-xl cursor-pointer group focus:outline-none"
+            className="fixed bottom-8 right-6 md:right-8 z-50 w-12 h-12 rounded-sm bg-surface border border-gold/30 text-gold hover:bg-gold hover:text-bg flex items-center justify-center transition-all duration-300 shadow-xl cursor-pointer group focus:outline-none"
             aria-label="Scroll to top"
           >
-            <ArrowUp className="w-5 h-5 stroke-[2] group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUp className="w-5 h-5 transition-transform" />
           </motion.button>
         )}
       </AnimatePresence>
