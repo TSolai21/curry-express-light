@@ -66,7 +66,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-5 py-3.5 text-sm text-white placeholder:text-white/40 outline-none focus:border-[#DAC49C]/50 transition-colors"
+                className="flex-1 bg-stone-50/5 border border-white/10 rounded-xl px-5 py-3.5 text-sm text-white placeholder:text-white/40 outline-none focus:border-[#DAC49C]/50 transition-colors"
               />
               <button 
                 type="submit"
@@ -133,13 +133,13 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div className="space-y-4">
               <h4 className="font-sans text-[11px] uppercase font-bold tracking-[0.2em] text-[#DAC49C]">Follow Us</h4>
               <div className="flex gap-2">
-                <a href="#insta" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/70 hover:text-primary hover:bg-[#DAC49C] transition-all duration-300 border border-white/10 hover:border-transparent">
+                <a href="#insta" className="w-10 h-10 rounded-full bg-stone-50/5 flex items-center justify-center text-white/70 hover:text-primary hover:bg-[#DAC49C] transition-all duration-300 border border-white/10 hover:border-transparent">
                   <Instagram className="w-4 h-4 stroke-[1.5]" />
                 </a>
-                <a href="#facebook" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/70 hover:text-primary hover:bg-[#DAC49C] transition-all duration-300 border border-white/10 hover:border-transparent">
+                <a href="#facebook" className="w-10 h-10 rounded-full bg-stone-50/5 flex items-center justify-center text-white/70 hover:text-primary hover:bg-[#DAC49C] transition-all duration-300 border border-white/10 hover:border-transparent">
                   <Facebook className="w-4 h-4 stroke-[1.5]" />
                 </a>
-                <a href="#tiktok" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/70 hover:text-primary hover:bg-[#DAC49C] transition-all duration-300 border border-white/10 hover:border-transparent">
+                <a href="#tiktok" className="w-10 h-10 rounded-full bg-stone-50/5 flex items-center justify-center text-white/70 hover:text-primary hover:bg-[#DAC49C] transition-all duration-300 border border-white/10 hover:border-transparent">
                   <TikTokIcon />
                 </a>
               </div>

@@ -28,7 +28,7 @@ export default function MapSection({ onOrderNow }: MapSectionProps) {
             <div className="space-y-6">
               {/* Address */}
               <div className="flex items-start gap-4">
-                <span className="p-2 border border-primary/10 text-primary bg-white">
+                <span className="p-2 border border-primary/10 text-primary bg-stone-50">
                   <MapPin className="w-4 h-4 stroke-[1.5]" />
                 </span>
                 <div>
@@ -43,7 +43,7 @@ export default function MapSection({ onOrderNow }: MapSectionProps) {
 
               {/* Hours */}
               <div className="flex items-start gap-4">
-                <span className="p-2 border border-primary/10 text-primary bg-white">
+                <span className="p-2 border border-primary/10 text-primary bg-stone-50">
                   <Clock className="w-4 h-4 stroke-[1.5]" />
                 </span>
                 <div>
@@ -58,7 +58,7 @@ export default function MapSection({ onOrderNow }: MapSectionProps) {
 
               {/* Contact */}
               <div className="flex items-start gap-4">
-                <span className="p-2 border border-primary/10 text-primary bg-white">
+                <span className="p-2 border border-primary/10 text-primary bg-stone-50">
                   <Phone className="w-4 h-4 stroke-[1.5]" />
                 </span>
                 <div>
@@ -92,7 +92,7 @@ export default function MapSection({ onOrderNow }: MapSectionProps) {
           </div>
 
           {/* Right: Real Google Map Iframe inside perfect museum art frame */}
-          <div className="lg:col-span-7 relative min-h-[400px] border border-primary/15 p-3.5 bg-white rounded-xl">
+          <div className="lg:col-span-7 relative min-h-[400px] border border-primary/15 p-3.5 bg-stone-50 rounded-xl">
             <div className="w-full h-full border border-primary/10 relative overflow-hidden">
               <iframe
                 title="Curry Express Location"

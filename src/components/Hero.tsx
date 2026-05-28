@@ -125,7 +125,7 @@ export default function Hero({ onOpenMenu, onOrderNow }: HeroProps) {
           initial={{ opacity: 0, scale: 0.97, rotate: 2 }}
           animate={{ opacity: 1, scale: 1, rotate: 2 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 rounded-xl overflow-hidden border border-primary/15 p-3.5 bg-white aspect-[4/5] w-full max-w-[400px] shadow-2xl hover:shadow-[0_20px_50px_rgba(43,30,26,0.15)] hover:[transform:rotate(0deg)] transition-all duration-500 flex flex-col [transform:rotate(2deg)]"
+          className="relative z-10 rounded-xl overflow-hidden border border-primary/15 p-3.5 bg-stone-50 aspect-[4/5] w-full max-w-[400px] shadow-2xl hover:shadow-[0_20px_50px_rgba(43,30,26,0.15)] hover:[transform:rotate(0deg)] transition-all duration-500 flex flex-col [transform:rotate(2deg)]"
         >
           <div className="w-full h-full overflow-hidden border border-primary/10 rounded-lg relative flex flex-col">
             <Swiper
@@ -158,7 +158,7 @@ export default function Hero({ onOpenMenu, onOrderNow }: HeroProps) {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -10, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute -top-4 right-2 bg-white px-4 py-2.5 rounded-xl border border-primary/30 hidden md:flex items-center gap-2 select-none z-20 shadow-md hover:translate-y-[-2px] transition-transform duration-200"
+            className="absolute -top-4 right-2 bg-stone-50 px-4 py-2.5 rounded-xl border border-primary/30 hidden md:flex items-center gap-2 select-none z-20 shadow-md hover:translate-y-[-2px] transition-transform duration-200"
           >
             <Star className="w-3.5 h-3.5 text-secondary fill-secondary animate-pulse" />
             <span className="font-sans text-[9px] font-bold uppercase text-primary tracking-[0.2em]">
@@ -174,7 +174,7 @@ export default function Hero({ onOpenMenu, onOrderNow }: HeroProps) {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 10, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute -bottom-4 left-2 bg-white px-4 py-2.5 rounded-xl border border-primary/30 hidden md:flex items-center gap-2 select-none z-20 shadow-md hover:translate-y-[2px] transition-transform duration-200"
+            className="absolute -bottom-4 left-2 bg-stone-50 px-4 py-2.5 rounded-xl border border-primary/30 hidden md:flex items-center gap-2 select-none z-20 shadow-md hover:translate-y-[2px] transition-transform duration-200"
           >
             <Flame className="w-3.5 h-3.5 text-secondary fill-secondary animate-bounce" />
             <span className="font-sans text-[9px] font-bold uppercase text-secondary tracking-[0.2em]">
@@ -189,8 +189,7 @@ export default function Hero({ onOpenMenu, onOrderNow }: HeroProps) {
         <svg 
           viewBox="0 0 1200 120" 
           preserveAspectRatio="none" 
-          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
-          fill="#ffffff"
+          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px] fill-stone-50"
         >
           <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
         </svg>

@@ -65,7 +65,7 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
   };
 
   return (
-    <section id="reviews" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-white overflow-hidden">
+    <section id="reviews" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-stone-50 overflow-hidden">
       {/* Decorative Floating Circles representing spices/seeds */}
       <div className="absolute top-1/2 right-[5%] pointer-events-none -z-0 animate-float-fast opacity-10 hidden lg:block">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-primary">
@@ -100,7 +100,7 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
                 id={`review-card-${testi.id}-${i}`}
               >
                 <div className="space-y-4">
-                  <div className="h-44 w-full overflow-hidden border border-primary/5 bg-white mb-4 rounded-xl flex items-center justify-center relative">
+                  <div className="h-44 w-full overflow-hidden border border-primary/5 bg-stone-50 mb-4 rounded-xl flex items-center justify-center relative">
                     {testi.image ? (
                       <Cropper
                         image={testi.image}
@@ -144,7 +144,7 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-lg shadow-2xl max-w-xl w-full p-6 md:p-8 relative text-left border border-primary/5 font-sans"
+              className="bg-stone-50 rounded-lg shadow-2xl max-w-xl w-full p-6 md:p-8 relative text-left border border-primary/5 font-sans"
             >
               {/* Close Button */}
               <button

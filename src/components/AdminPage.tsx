@@ -380,7 +380,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-primary/10 p-8 max-w-sm w-full text-left relative z-10 shadow-xl"
+          className="bg-stone-50 border border-primary/10 p-8 max-w-sm w-full text-left relative z-10 shadow-xl"
         >
 
 
@@ -479,14 +479,14 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
         <div className="flex flex-row gap-2 sm:gap-4 flex-1 sm:flex-none">
           <button
             onClick={() => setActiveTab('reviews')}
-            className={`flex-1 sm:flex-none px-2 sm:px-6 py-3 rounded-xl font-sans text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-colors cursor-pointer text-center ${activeTab === 'reviews' ? 'bg-primary text-white' : 'bg-white text-primary border border-primary/10 hover:border-primary/30'
+            className={`flex-1 sm:flex-none px-2 sm:px-6 py-3 rounded-xl font-sans text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-colors cursor-pointer text-center ${activeTab === 'reviews' ? 'bg-primary text-white' : 'bg-stone-50 text-primary border border-primary/10 hover:border-primary/30'
               }`}
           >
             <span className="hidden sm:inline">Manage </span>Reviews
           </button>
           <button
             onClick={() => setActiveTab('offers')}
-            className={`flex-1 sm:flex-none px-2 sm:px-6 py-3 rounded-xl font-sans text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-colors cursor-pointer text-center ${activeTab === 'offers' ? 'bg-primary text-white' : 'bg-white text-primary border border-primary/10 hover:border-primary/30'
+            className={`flex-1 sm:flex-none px-2 sm:px-6 py-3 rounded-xl font-sans text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-colors cursor-pointer text-center ${activeTab === 'offers' ? 'bg-primary text-white' : 'bg-stone-50 text-primary border border-primary/10 hover:border-primary/30'
               }`}
           >
             <span className="hidden sm:inline">Manage </span>Offers
@@ -511,7 +511,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
       )}
 
       {/* Data Display */}
-      <div className="bg-white rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+      <div className="bg-stone-50 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
         
         {/* Mobile Cards (Hidden on md+) */}
         <div className="md:hidden p-4 space-y-4 bg-background-warm/30">
@@ -522,7 +522,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
               <p className="p-4 text-center text-primary/50 text-xs">No reviews found in the database.</p>
             ) : (
               paginatedReviews.map((testi) => (
-                <div key={testi.id} className="bg-white border border-primary/10 rounded-xl p-4 flex flex-col gap-3 shadow-sm">
+                <div key={testi.id} className="bg-stone-50 border border-primary/10 rounded-xl p-4 flex flex-col gap-3 shadow-sm">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       {testi.image ? (
@@ -540,10 +540,10 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                       </div>
                     </div>
                     <div className="flex gap-1 border border-primary/10 rounded-lg p-0.5 bg-background-warm/50 flex-shrink-0">
-                      <button onClick={() => handleEditReview(testi)} className="p-2 text-primary hover:bg-white rounded-md transition-colors" title="Edit">
+                      <button onClick={() => handleEditReview(testi)} className="p-2 text-primary hover:bg-stone-50 rounded-md transition-colors" title="Edit">
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
-                      <button onClick={() => handleDeleteReview(testi.id)} className="p-2 text-red-500 hover:bg-white rounded-md transition-colors" title="Delete">
+                      <button onClick={() => handleDeleteReview(testi.id)} className="p-2 text-red-500 hover:bg-stone-50 rounded-md transition-colors" title="Delete">
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -557,7 +557,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
               <p className="p-4 text-center text-primary/50 text-xs">No offers found in the database.</p>
             ) : (
               paginatedOffers.map((offer) => (
-                <div key={offer.id} className="bg-white border border-primary/10 rounded-xl p-4 flex flex-col gap-3 shadow-sm">
+                <div key={offer.id} className="bg-stone-50 border border-primary/10 rounded-xl p-4 flex flex-col gap-3 shadow-sm">
                   <div className="flex items-start justify-between">
                     <div className="flex gap-3">
                       {offer.image ? (
@@ -578,10 +578,10 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                       </div>
                     </div>
                     <div className="flex gap-1 border border-primary/10 rounded-lg p-0.5 bg-background-warm/50 flex-shrink-0">
-                      <button onClick={() => handleEditOffer(offer)} className="p-2 text-primary hover:bg-white rounded-md transition-colors" title="Edit">
+                      <button onClick={() => handleEditOffer(offer)} className="p-2 text-primary hover:bg-stone-50 rounded-md transition-colors" title="Edit">
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
-                      <button onClick={() => handleDeleteOffer(offer.id)} className="p-2 text-red-500 hover:bg-white rounded-md transition-colors" title="Delete">
+                      <button onClick={() => handleDeleteOffer(offer.id)} className="p-2 text-red-500 hover:bg-stone-50 rounded-md transition-colors" title="Delete">
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -731,18 +731,18 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden border border-primary/10 my-4 lg:my-8 max-h-[95vh] lg:max-h-[90vh] relative"
+              className="bg-stone-50 rounded-2xl shadow-2xl max-w-6xl w-full flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden border border-primary/10 my-4 lg:my-8 max-h-[95vh] lg:max-h-[90vh] relative"
             >
               {/* Global Close Button */}
               <button 
                 onClick={() => activeTab === 'reviews' ? handleCancelReviewEdit() : handleCancelOfferEdit()}
-                className="absolute top-4 right-4 z-50 p-2 bg-white/50 hover:bg-white text-primary/40 hover:text-primary rounded-full transition-colors cursor-pointer backdrop-blur-sm border border-primary/5 hover:border-primary/20 shadow-sm"
+                className="absolute top-4 right-4 z-50 p-2 bg-stone-50/50 hover:bg-stone-50 text-primary/40 hover:text-primary rounded-full transition-colors cursor-pointer backdrop-blur-sm border border-primary/5 hover:border-primary/20 shadow-sm"
               >
                 <X className="w-5 h-5" />
               </button>
 
               {/* Form Side */}
-              <div className="w-full lg:w-1/2 p-6 md:p-8 lg:overflow-y-auto bg-white flex-shrink-0">
+              <div className="w-full lg:w-1/2 p-6 md:p-8 lg:overflow-y-auto bg-stone-50 flex-shrink-0">
                 <div className="mb-6 pr-8">
                   <span className="font-sans text-[9px] font-bold text-primary/50 uppercase tracking-[0.3em]">
                     Form 03 / SYSTEM INTAKE
@@ -838,7 +838,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                         type="button"
                         onClick={handleCancelReviewEdit}
                         disabled={isSubmitting}
-                        className="px-6 bg-white text-primary py-3.5 rounded-xl font-sans text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary/5 transition-all border border-primary/20 cursor-pointer disabled:opacity-70"
+                        className="px-6 bg-stone-50 text-primary py-3.5 rounded-xl font-sans text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary/5 transition-all border border-primary/20 cursor-pointer disabled:opacity-70"
                       >
                         Cancel
                       </button>
@@ -935,7 +935,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                         type="button"
                         onClick={handleCancelOfferEdit}
                         disabled={isSubmitting}
-                        className="px-6 bg-white text-primary py-3.5 rounded-xl font-sans text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary/5 transition-all border border-primary/20 cursor-pointer disabled:opacity-70"
+                        className="px-6 bg-stone-50 text-primary py-3.5 rounded-xl font-sans text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary/5 transition-all border border-primary/20 cursor-pointer disabled:opacity-70"
                       >
                         Cancel
                       </button>
@@ -951,7 +951,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                 </span>
                 
                 {activeTab === 'reviews' ? (
-                  <div className="w-full max-w-[380px] p-8 bg-white rounded-xl space-y-5 border border-primary/10 flex flex-col justify-between text-left shadow-lg scale-90 md:scale-100 origin-center">
+                  <div className="w-full max-w-[380px] p-8 bg-stone-50 rounded-xl space-y-5 border border-primary/10 flex flex-col justify-between text-left shadow-lg scale-90 md:scale-100 origin-center">
                     <div className="space-y-4">
                       {reviewImageUrl && (
                         <div className="h-44 w-full overflow-hidden border border-primary/5 bg-background-warm mb-4 rounded-xl relative">
@@ -983,10 +983,10 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full bg-white rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8 border border-primary/10 shadow-lg scale-90 md:scale-100 origin-center">
+                  <div className="w-full bg-stone-50 rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8 border border-primary/10 shadow-lg scale-90 md:scale-100 origin-center">
                     <div className="w-full md:w-3/5 space-y-4 text-left">
                       {offerTag && (
-                        <div className="inline-block bg-white border border-primary/20 text-primary px-3 py-1 rounded-xl font-sans text-[8px] font-bold uppercase tracking-[0.2em]">
+                        <div className="inline-block bg-stone-50 border border-primary/20 text-primary px-3 py-1 rounded-xl font-sans text-[8px] font-bold uppercase tracking-[0.2em]">
                           {offerTag}
                         </div>
                       )}
@@ -1032,7 +1032,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center border border-primary/10 relative"
+              className="bg-stone-50 rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center border border-primary/10 relative"
             >
               <AlertCircle className="w-12 h-12 text-primary/50 mx-auto mb-4" />
               <h3 className="font-serif text-xl font-bold text-primary mb-2">
@@ -1044,7 +1044,7 @@ export default function AdminPage({ onBackToHome }: AdminPageProps) {
               <div className="flex gap-3">
                 <button
                   onClick={() => setConfirmDialog(prev => ({ ...prev, isOpen: false }))}
-                  className="flex-1 px-4 py-3 bg-white border border-primary/20 text-primary font-sans text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-background-warm transition-colors cursor-pointer"
+                  className="flex-1 px-4 py-3 bg-stone-50 border border-primary/20 text-primary font-sans text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-background-warm transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

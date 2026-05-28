@@ -61,7 +61,7 @@ export default function MenuPage({ onOrderNow, initialCategory = 'all' }: MenuPa
       {/* Redesigned Filter & Search Bar Layout */}
       <div className="flex flex-col gap-6 mb-12">
         {/* Search Input Box */}
-        <div className="relative bg-white border border-primary/10 p-1 shadow-xs flex items-center">
+        <div className="relative bg-stone-50 border border-primary/10 p-1 shadow-xs flex items-center">
           <Search className="w-4 h-4 text-primary/30 ml-4" />
           <input
             type="text"
@@ -92,7 +92,7 @@ export default function MenuPage({ onOrderNow, initialCategory = 'all' }: MenuPa
                   className={`px-5 py-3.5 text-[9px] font-bold uppercase tracking-[0.2em] font-sans whitespace-nowrap cursor-pointer transition-all duration-300 border shrink-0 ${
                     isActive
                       ? 'bg-primary text-white border-primary shadow-xs'
-                      : 'bg-white text-primary border-primary/15 hover:border-primary/30 hover:bg-primary/[0.02]'
+                      : 'bg-stone-50 text-primary border-primary/15 hover:border-primary/30 hover:bg-primary/[0.02]'
                   }`}
                 >
                   {cat.name}
@@ -105,7 +105,7 @@ export default function MenuPage({ onOrderNow, initialCategory = 'all' }: MenuPa
 
       {/* Menu Grid */}
       {filteredItems.length === 0 ? (
-        <div className="py-32 text-center text-primary/50 text-sm font-sans border border-dashed border-primary/25 bg-white/40">
+        <div className="py-32 text-center text-primary/50 text-sm font-sans border border-dashed border-primary/25 bg-stone-50/40">
           No dishes found matching your selection. Try a different search query.
         </div>
       ) : (
@@ -118,7 +118,7 @@ export default function MenuPage({ onOrderNow, initialCategory = 'all' }: MenuPa
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
                 key={item.id}
-                className="bg-white border border-primary/10 p-4 hover:border-primary/25 transition-all flex flex-col justify-between group relative"
+                className="bg-stone-50 border border-primary/10 p-4 hover:border-primary/25 transition-all flex flex-col justify-between group relative"
               >
                 {/* Dietary Tag */}
                 {item.tag && (
@@ -171,7 +171,7 @@ export default function MenuPage({ onOrderNow, initialCategory = 'all' }: MenuPa
       )}
 
       {/* Safety and packaging guidelines */}
-      <div className="mt-16 p-6 bg-white border border-primary/10 text-center flex flex-col sm:flex-row items-center justify-center gap-3 text-xs tracking-wide font-sans font-semibold text-primary/70">
+      <div className="mt-16 p-6 bg-stone-50 border border-primary/10 text-center flex flex-col sm:flex-row items-center justify-center gap-3 text-xs tracking-wide font-sans font-semibold text-primary/70">
         <ShieldCheck className="w-5 h-5 text-primary" />
         <span>Curry Express utilizes biodegradable wheat-straw boxes and secure sealed delivery packages to keep your food perfectly hot.</span>
       </div>

@@ -43,10 +43,10 @@ export default function SpecialOffers({ offers, onOrderCombo, onOpenMenu }: Spec
         {/* Offers Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {offers.map((offer) => (
-            <div key={offer.id} className="bg-white rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 border border-primary/10 hover:border-primary/20 transition-all duration-300">
+            <div key={offer.id} className="bg-stone-50 rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 border border-primary/10 hover:border-primary/20 transition-all duration-300">
               <div className="w-full md:w-3/5 space-y-4 text-left">
                 {offer.tag && (
-                  <div className="inline-block bg-white border border-primary/20 text-primary px-3 py-1 rounded-xl font-sans text-[8px] font-bold uppercase tracking-[0.2em]">
+                  <div className="inline-block bg-stone-50 border border-primary/20 text-primary px-3 py-1 rounded-xl font-sans text-[8px] font-bold uppercase tracking-[0.2em]">
                     {offer.tag}
                   </div>
                 )}
@@ -67,7 +67,7 @@ export default function SpecialOffers({ offers, onOrderCombo, onOpenMenu }: Spec
                 </button>
               </div>
               
-              <div className="w-full md:w-2/5 aspect-[4/3] bg-white rounded-xl flex items-center justify-center border border-primary/10 overflow-hidden relative">
+              <div className="w-full md:w-2/5 aspect-[4/3] bg-stone-50 rounded-xl flex items-center justify-center border border-primary/10 overflow-hidden relative">
                 <Cropper
                   image={offer.image}
                   crop={offer.image_settings ? { x: offer.image_settings.x, y: offer.image_settings.y } : { x: 0, y: 0 }}
@@ -91,8 +91,7 @@ export default function SpecialOffers({ offers, onOrderCombo, onOpenMenu }: Spec
         <svg 
           viewBox="0 0 1200 120" 
           preserveAspectRatio="none" 
-          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
-          fill="#ffffff"
+          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px] fill-stone-50"
         >
           <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
         </svg>

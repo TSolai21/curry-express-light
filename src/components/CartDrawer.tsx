@@ -104,7 +104,7 @@ export default function CartDrawer({
             className="relative w-full max-w-md h-full bg-background-warm shadow-xl flex flex-col z-10 border-l border-primary/10"
           >
             {/* Header section */}
-            <div className="p-6 border-b border-primary/10 flex justify-between items-center bg-white">
+            <div className="p-6 border-b border-primary/10 flex justify-between items-center bg-stone-50">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-4 h-4 text-primary" />
                 <h3 className="font-serif text-lg font-bold text-primary tracking-tight">Your Feast Basket</h3>
@@ -122,7 +122,7 @@ export default function CartDrawer({
 
             {/* Simulated order states */}
             {orderStep !== 'cart' ? (
-              <div className="flex-grow flex flex-col items-center justify-center p-8 text-center bg-white space-y-6">
+              <div className="flex-grow flex flex-col items-center justify-center p-8 text-center bg-stone-50 space-y-6">
                 
                 {/* 1. Validating State */}
                 {orderStep === 'validating' && (
@@ -190,7 +190,7 @@ export default function CartDrawer({
 
                     <div className="p-4 bg-background-warm rounded-xl border border-primary/10 text-left space-y-2 select-none">
                       <span className="block text-[8px] uppercase font-bold tracking-[0.2em] text-primary/60">Unlocked Reward Code</span>
-                      <div className="flex justify-between items-center bg-white border border-primary/15 p-2.5 rounded-xl">
+                      <div className="flex justify-between items-center bg-stone-50 border border-primary/15 p-2.5 rounded-xl">
                         <code className="font-mono text-sm font-semibold text-secondary">CURRYLOVE20</code>
                         <span className="text-[9px] text-primary/50 font-sans tracking-wide">Save 20% on next!</span>
                       </div>
@@ -227,7 +227,7 @@ export default function CartDrawer({
                       {cartItems.map((item, idx) => (
                         <div
                           key={`${item.id}-${idx}`}
-                          className="bg-white rounded-xl p-3 border border-primary/10 flex gap-3 relative"
+                          className="bg-stone-50 rounded-xl p-3 border border-primary/10 flex gap-3 relative"
                         >
                           <img
                             alt={item.menuItem.name}
@@ -288,7 +288,7 @@ export default function CartDrawer({
                     </div>
 
                     {/* Operational Summary */}
-                    <div className="p-6 bg-white border-t border-primary/10 space-y-4">
+                    <div className="p-6 bg-stone-50 border-t border-primary/10 space-y-4">
                       
                       {/* Delivery/Pickup toggle */}
                       <div className="grid grid-cols-2 p-1 bg-background-warm rounded-xl border border-primary/10">
@@ -321,7 +321,7 @@ export default function CartDrawer({
                           value={promoInput}
                           onChange={(e) => setPromoInput(e.target.value)}
                           placeholder="Promo code"
-                          className="flex-grow bg-white border border-primary/15 rounded-xl px-3 py-2 text-xs text-primary outline-none focus:border-primary font-sans uppercase"
+                          className="flex-grow bg-stone-50 border border-primary/15 rounded-xl px-3 py-2 text-xs text-primary outline-none focus:border-primary font-sans uppercase"
                         />
                         <button
                           type="submit"

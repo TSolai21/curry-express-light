@@ -76,7 +76,7 @@ export default function MenuExplorerDrawer({
             className="relative w-full max-w-xl h-full bg-background-warm shadow-xl flex flex-col z-10 border-l border-primary/10"
           >
             {/* Header */}
-            <div className="p-6 border-b border-primary/10 flex justify-between items-center bg-white">
+            <div className="p-6 border-b border-primary/10 flex justify-between items-center bg-stone-50">
               <div>
                 <h3 className="font-serif text-xl font-bold text-primary tracking-tight">
                   Menu Explorer
@@ -95,7 +95,7 @@ export default function MenuExplorerDrawer({
             </div>
 
             {/* Quick Filter & Search Bar */}
-            <div className="p-4 bg-white border-b border-primary/10 space-y-4">
+            <div className="p-4 bg-stone-50 border-b border-primary/10 space-y-4">
               {/* Search */}
               <div className="relative border border-primary/15 rounded-xl">
                 <Search className="w-3.5 h-3.5 text-primary/40 absolute left-3.5 top-[14px]" />
@@ -117,7 +117,7 @@ export default function MenuExplorerDrawer({
                     className={`px-4 py-2 rounded-xl text-[8px] font-bold uppercase tracking-[0.2em] font-sans whitespace-nowrap cursor-pointer transition-all ${
                       selectedCategory === cat.key
                         ? 'bg-primary text-white border border-primary'
-                        : 'bg-white text-primary border border-primary/15 hover:bg-primary/5'
+                        : 'bg-stone-50 text-primary border border-primary/15 hover:bg-primary/5'
                     }`}
                   >
                     {cat.name}
@@ -139,7 +139,7 @@ export default function MenuExplorerDrawer({
                   return (
                     <div
                       key={item.id}
-                      className="bg-white rounded-xl p-4 border border-primary/10 flex gap-4 hover:border-primary/20 transition-all relative"
+                      className="bg-stone-50 rounded-xl p-4 border border-primary/10 flex gap-4 hover:border-primary/20 transition-all relative"
                     >
                       {/* Image */}
                       <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 bg-background-warm border border-primary/5 p-1">
@@ -214,7 +214,7 @@ export default function MenuExplorerDrawer({
             </div>
 
             {/* Clean bottom check guarantees */}
-            <div className="p-4 bg-white border-t border-primary/10 text-center flex items-center justify-center gap-2 text-[10px] uppercase tracking-wider font-sans font-bold text-primary/55 select-none">
+            <div className="p-4 bg-stone-50 border-t border-primary/10 text-center flex items-center justify-center gap-2 text-[10px] uppercase tracking-wider font-sans font-bold text-primary/55 select-none">
               <ShieldCheck className="w-4 h-4 text-primary" />
               Insulated wheat straw packaging configured by hand.
             </div>

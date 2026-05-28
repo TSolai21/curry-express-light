@@ -62,7 +62,7 @@ export default function GallerySection() {
             <div
               key={idx}
               onClick={() => setActivePhotoIdx(idx)}
-              className="aspect-square rounded-xl overflow-hidden border border-primary/10 bg-white p-2 hover:border-primary/30 transition-all duration-300 cursor-pointer group relative"
+              className="aspect-square rounded-xl overflow-hidden border border-primary/10 bg-stone-50 p-2 hover:border-primary/30 transition-all duration-300 cursor-pointer group relative"
             >
               <div className="w-full h-full overflow-hidden border border-primary/5">
                 <img
@@ -73,7 +73,7 @@ export default function GallerySection() {
                 />
               </div>
               <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                <div className="bg-white rounded-xl border border-primary px-3 py-1.5 text-primary text-[8px] uppercase tracking-[0.2em] font-bold transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                <div className="bg-stone-50 rounded-xl border border-primary px-3 py-1.5 text-primary text-[8px] uppercase tracking-[0.2em] font-bold transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                   Inspect Plate
                 </div>
               </div>
@@ -117,7 +117,7 @@ export default function GallerySection() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.25 }}
-                  className="bg-white border border-primary/20 p-3 max-w-full max-h-[65vh] shadow-xl"
+                  className="bg-stone-50 border border-primary/20 p-3 max-w-full max-h-[65vh] shadow-xl"
                 >
                   <img
                     alt={photos[activePhotoIdx].title}
@@ -161,8 +161,7 @@ export default function GallerySection() {
         <svg 
           viewBox="0 0 1200 120" 
           preserveAspectRatio="none" 
-          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px]"
-          fill="#ffffff"
+          className="relative block w-full h-[16px] md:h-[24px] lg:h-[32px] fill-stone-50"
         >
           <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" />
         </svg>

@@ -17,7 +17,7 @@ export default function MobileBottomNav({ currentPage, currentSection, onNavigat
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden pb-[var(--sab)] bg-white/85 backdrop-blur-lg border-t border-primary/10 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] touch-none">
+    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden pb-[var(--sab)] bg-stone-50/85 backdrop-blur-lg border-t border-primary/10 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] touch-none">
       <div className="flex justify-between items-center px-2 py-2 relative h-16">
         {/* Order Now FAB (Floating Action Button) centered */}
         <div className="absolute left-1/2 -top-6 -translate-x-1/2 z-50">

@@ -7,7 +7,7 @@ export default function AboutSection() {
   const [showFullStory, setShowFullStory] = useState(false);
 
   return (
-    <section id="about" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-white overflow-hidden">
+    <section id="about" className="relative pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 bg-stone-50 overflow-hidden">
       {/* Decorative Floating Star Anise */}
       <div className="absolute bottom-32 left-[5%] pointer-events-none -z-0 animate-float-slower opacity-15 hidden md:block">
         <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-secondary">
@@ -31,7 +31,7 @@ export default function AboutSection() {
             {/* Back card */}
             <div className="absolute inset-0 bg-[#EFEBE4] border border-[#E3DEC4] shadow-sm transform -rotate-3 translate-x-2 translate-y-3 rounded-sm"></div>
             {/* Front card (Polaroid style) */}
-            <div className="relative bg-white p-3 pb-4 shadow-md border border-gray-100 rounded-sm">
+            <div className="relative bg-stone-50 p-3 pb-4 shadow-md border border-gray-100 rounded-sm">
               <div className="overflow-hidden">
                 <img
                   alt="Indian Master Chef"
@@ -84,11 +84,11 @@ export default function AboutSection() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.98, opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="bg-white rounded-xl p-8 md:p-12 max-w-2xl w-full max-h-[85vh] overflow-y-auto border border-primary/20 shadow-none relative text-left"
+              className="bg-stone-50 rounded-xl p-8 md:p-12 max-w-2xl w-full max-h-[85vh] overflow-y-auto border border-primary/20 shadow-none relative text-left"
             >
               <button
                 onClick={() => setShowFullStory(false)}
-                className="absolute top-6 right-6 p-2 text-primary/50 hover:text-primary rounded-xl border border-primary/10 bg-white transition-colors"
+                className="absolute top-6 right-6 p-2 text-primary/50 hover:text-primary rounded-xl border border-primary/10 bg-stone-50 transition-colors"
                 aria-label="Close"
               >
                 <X className="w-4 h-4" />

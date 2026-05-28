@@ -38,7 +38,7 @@ export default function MenuSection({ onSelectCategory, onOpenMenuWithCategory }
   ];
 
   return (
-    <section id="menu" className="relative bg-white pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 overflow-hidden">
+    <section id="menu" className="relative bg-stone-50 pt-16 pb-20 md:pt-20 md:pb-24 px-6 md:px-12 xl:px-20 overflow-hidden">
       {/* Decorative Floating Spices/Herbs */}
       <div className="absolute top-40 left-[4%] pointer-events-none -z-0 animate-float-slow opacity-15 hidden lg:block">
         <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-secondary">
@@ -78,7 +78,7 @@ export default function MenuSection({ onSelectCategory, onOpenMenuWithCategory }
                   referrerPolicy="no-referrer"
                 />
                 {section.tag && (
-                  <div className="absolute top-4 left-4 bg-white border border-primary/20 text-primary px-3 py-1 text-[8px] uppercase tracking-[0.2em] font-bold">
+                  <div className="absolute top-4 left-4 bg-stone-50 border border-primary/20 text-primary px-3 py-1 text-[8px] uppercase tracking-[0.2em] font-bold">
                     {section.tag}
                   </div>
                 )}
